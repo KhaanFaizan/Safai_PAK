@@ -23,6 +23,60 @@ const getProviderProfile = asyncHandler(async (req, res) => {
     });
 });
 
+// @desc    Get all users (Admin only)
+// @route   GET /api/users
+// @access  Private/Admin
+const getUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({}).select('-password');
+    res.json(users);
+});
+
+// @desc    Verify provider
+// @route   PUT /api/users/:id/verify
+// @access  Private/Admin
+const verifyProvider = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (user) {
+        user.isVerified = req.body.isVerified;
+        const updatedUser = await user.save();
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            role: updatedUser.role,
+            isVerified: updatedUser.isVerified,
+        });
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+});
+
+// @desc    Suspend/Activate user
+// @route   PUT /api/users/:id/suspend
+// @access  Private/Admin
+const suspendUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (user) {
+        user.isSuspended = !user.isSuspended;
+        const updatedUser = await user.save();
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isSuspended: updatedUser.isSuspended,
+        });
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+});
+
 module.exports = {
     getProviderProfile,
+    getUsers,
+    verifyProvider,
+    suspendUser,
 };

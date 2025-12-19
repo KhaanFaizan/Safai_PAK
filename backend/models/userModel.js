@@ -36,7 +36,11 @@ const userSchema = mongoose.Schema(
         },
         isVerified: {
             type: Boolean,
-            default: false, // Only relevant for providers mainly, but good to have
+            default: false,
+        },
+        isSuspended: {
+            type: Boolean,
+            default: false,
         },
         rating: {
             type: Number,

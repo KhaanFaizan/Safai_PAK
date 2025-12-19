@@ -26,6 +26,8 @@ const LoginPage = () => {
 
             if (data.role === 'provider') {
                 navigate('/provider/dashboard');
+            } else if (data.role === 'admin') {
+                navigate('/admin/dashboard');
             } else {
                 navigate('/services');
             }

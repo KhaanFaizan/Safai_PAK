@@ -19,6 +19,11 @@ const protect = asyncHandler(async (req, res, next) => {
             // Get user from the token
             req.user = await User.findById(decoded.id).select('-password');
 
+            if (req.user && req.user.isSuspended) {
+                res.status(403);
+                throw new Error('Your account is suspended.');
+            }
+
             next();
         } catch (error) {
             console.error(error);

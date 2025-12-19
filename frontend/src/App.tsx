@@ -22,6 +22,12 @@ import ProviderServices from './pages/provider/ProviderServices';
 import ProviderBookings from './pages/provider/ProviderBookings';
 import ProviderEarnings from './pages/provider/ProviderEarnings';
 
+// Admin Pages
+import AdminLayout from './components/layouts/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProviders from './pages/admin/AdminProviders';
+import AdminAllUsers from './pages/admin/AdminAllUsers';
+
 // Navbar Component
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext)!;
@@ -48,6 +54,9 @@ const Navbar = () => {
               )}
               {user?.role === 'provider' && (
                 <Link to="/provider/dashboard" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('dashboard')}</Link>
+              )}
+              {user?.role === 'admin' && (
+                <Link to="/admin/dashboard" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">Admin Panel</Link>
               )}
             </div>
           </div>
@@ -80,6 +89,7 @@ const Navbar = () => {
 
 function App() {
   return (
+    // Main App Provider Wrapper
     <AuthProvider>
       <LanguageProvider>
         <Router>
@@ -107,6 +117,14 @@ function App() {
                     <Route path="/provider/services" element={<ProviderServices />} />
                     <Route path="/provider/bookings" element={<ProviderBookings />} />
                     <Route path="/provider/earnings" element={<ProviderEarnings />} />
+                  </Route>
+                </Route>
+
+                <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+                  <Route element={<AdminLayout />}>
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/providers" element={<AdminProviders />} />
+                    <Route path="/admin/all-users" element={<AdminAllUsers />} />
                   </Route>
                 </Route>
               </Routes>

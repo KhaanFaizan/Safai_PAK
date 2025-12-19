@@ -14,7 +14,6 @@ const RegisterPage = () => {
         name: '',
         email: '',
         phone: '',
-        phone: '',
         city: '',
         password: '',
         confirmPassword: '',
@@ -32,6 +31,11 @@ const RegisterPage = () => {
         e.preventDefault();
         setError('');
 
+        if (formData.role === 'admin') {
+            alert("Admin registration is restricted. Please contact support to request administrative access.");
+            return;
+        }
+
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
             return;
@@ -43,9 +47,6 @@ const RegisterPage = () => {
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,
-                phone: formData.phone,
-                city: formData.city,
-                password: formData.password,
                 city: formData.city,
                 password: formData.password,
                 role: formData.role,
@@ -131,6 +132,17 @@ const RegisterPage = () => {
                                     className="w-4 h-4 text-primary-600 focus:ring-primary-500"
                                 />
                                 <span className="text-gray-900">Service Provider</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="admin"
+                                    checked={formData.role === 'admin'}
+                                    onChange={handleChange}
+                                    className="w-4 h-4 text-primary-600 focus:ring-primary-500"
+                                />
+                                <span className="text-gray-900">Admin</span>
                             </label>
                         </div>
                     </div>

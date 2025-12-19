@@ -57,6 +57,12 @@ const loginUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+
+        if (user.isSuspended) {
+            res.status(403);
+            throw new Error('Your account has been suspended. Please contact support.');
+        }
+
         res.json({
             _id: user.id,
             name: user.name,
