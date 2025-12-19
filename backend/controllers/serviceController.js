@@ -8,23 +8,53 @@ const getServices = asyncHandler(async (req, res) => {
     const pageSize = 10;
     const page = Number(req.query.pageNumber) || 1;
 
-    const keyword = req.query.keyword
-        ? {
-            name: {
-                $regex: req.query.keyword,
-                $options: 'i',
-            },
-        }
-        : {};
+    // Build query
+    const query = {};
 
-    const category = req.query.category
-        ? {
-            category: req.query.category,
-        }
-        : {};
+    // 1. Keyword Search
+    if (req.query.keyword) {
+        query.name = { $regex: req.query.keyword, $options: 'i' };
+    }
 
-    const count = await Service.countDocuments({ ...keyword, ...category });
-    const services = await Service.find({ ...keyword, ...category })
+    // 2. Category Filter
+    if (req.query.category) {
+        query.category = req.query.category;
+    }
+
+    // 3. Price Filter
+    if (req.query.minPrice || req.query.maxPrice) {
+        query.price = {};
+        if (req.query.minPrice) query.price.$gte = Number(req.query.minPrice);
+        if (req.query.maxPrice) query.price.$lte = Number(req.query.maxPrice);
+    }
+
+    // 4. Provider Filters (City, Rating)
+    let providerIds = null;
+    if (req.query.city || req.query.rating) {
+        const userQuery = {};
+        if (req.query.city) {
+            userQuery.city = { $regex: req.query.city, $options: 'i' };
+        }
+        if (req.query.rating) {
+            userQuery.rating = { $gte: Number(req.query.rating) };
+        }
+
+        const matchedProviders = await require('../models/userModel')
+            .find(userQuery)
+            .select('_id');
+        providerIds = matchedProviders.map((p) => p._id);
+
+        // If we're filtering by provider attrs and found none, return empty immediately
+        if (providerIds.length === 0) {
+            return res.json({ services: [], page, pages: 0 });
+        }
+
+        query.user = { $in: providerIds };
+    }
+
+    const count = await Service.countDocuments(query);
+    const services = await Service.find(query)
+        .populate('user', 'name city rating numReviews')
         .limit(pageSize)
         .skip(pageSize * (page - 1));
 

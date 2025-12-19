@@ -38,6 +38,16 @@ const userSchema = mongoose.Schema(
             type: Boolean,
             default: false, // Only relevant for providers mainly, but good to have
         },
+        rating: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+        numReviews: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
     },
     {
         timestamps: true,
