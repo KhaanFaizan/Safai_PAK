@@ -1,34 +1,95 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { AuthProvider, AuthContext } from './context/AuthContext';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
+// Pages
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import ServiceListing from './pages/ServiceListing';
+import ServiceDetails from './pages/ServiceDetails';
+import BookingPage from './pages/BookingPage';
+import MyBookings from './pages/MyBookings';
+import { Button } from './components/ui/Button';
+
+// Navbar Component
+const Navbar = () => {
+  const { user, logout } = useContext(AuthContext)!;
+  const { t, language, toggleLanguage } = useLanguage();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  return (
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <Link to="/" className="text-2xl font-bold text-primary-600">SafaiPak</Link>
+            <div className="hidden md:ml-6 md:flex md:space-x-8">
+              <Link to="/services" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('services')}</Link>
+              {user && <Link to="/bookings" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('myBookings')}</Link>}
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <Button variant="outline" onClick={toggleLanguage} className="px-3 py-1 text-sm">
+              {language === 'en' ? 'Urdu' : 'English'}
+            </Button>
+
+            {user ? (
+              <div className="flex items-center gap-4">
+                <span className="hidden md:block text-sm font-medium text-gray-700">
+                  {t('welcome')}, {user.name}
+                </span>
+                <Button onClick={handleLogout} variant="secondary" className="text-sm">
+                  {t('logout')}
+                </Button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <Link to="/login"><Button variant="outline">{t('login')}</Button></Link>
+                <Link to="/register"><Button>{t('register')}</Button></Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <nav style={{ padding: '1rem', borderBottom: '1px solid #ccc', display: 'flex', gap: '1rem' }}>
-          <Link to="/">Home</Link>
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
-          <Link to="/dashboard">Dashboard</Link>
-        </nav>
+      <LanguageProvider>
+        <Router>
+          <div className="min-h-screen bg-white">
+            <Navbar />
+            <main>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
 
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+                <Route path="/services" element={<ServiceListing />} />
+                <Route path="/services/:id" element={<ServiceDetails />} />
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-          </Route>
-        </Routes>
-      </Router>
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/book/:serviceId" element={<BookingPage />} />
+                  <Route path="/bookings" element={<MyBookings />} />
+                </Route>
+              </Routes>
+            </main>
+          </div>
+        </Router>
+      </LanguageProvider>
     </AuthProvider>
   );
 }

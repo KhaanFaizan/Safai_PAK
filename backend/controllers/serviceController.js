@@ -67,7 +67,7 @@ const getServices = asyncHandler(async (req, res) => {
 const getServiceById = asyncHandler(async (req, res) => {
     const service = await Service.findById(req.params.id).populate(
         'user',
-        'name email'
+        'name email rating numReviews'
     );
 
     if (service) {

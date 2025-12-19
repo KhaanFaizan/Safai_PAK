@@ -1,5 +1,14 @@
 {
-  "dependencies": {
-    "axios": "^1.13.2"
+  "name": "safai-pak-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev": "concurrently \"npm run server --prefix backend\" \"npm run dev --prefix frontend\"",
+    "server": "npm run dev --prefix backend",
+    "client": "npm run dev --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
