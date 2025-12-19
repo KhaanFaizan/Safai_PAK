@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const healthRoutes = require('./routes/healthRoutes');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const serviceRoutes = require('./routes/serviceRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use('/api', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/services', serviceRoutes);
 
 // Error Handling
 app.use(notFound);
