@@ -15,8 +15,8 @@ import officeCleaning from '../assets/images/office-cleaning-service.jpeg';
 
 const serviceImages: Record<string, string> = {
     'House Cleaning': houseCleaning,
-    'Pest Control Service': pestControl,
-    'Agricultural Spray': agriSpray,
+    'Pest Control': pestControl,
+    'Agricultural Services': agriSpray,
     'Deep Sanitation': deepSanitation,
     'Office Cleaning': officeCleaning,
 };
@@ -78,7 +78,7 @@ const ServiceDetails = () => {
                 {/* Image Section */}
                 <div className="h-96 rounded-xl overflow-hidden shadow-md">
                     <img
-                        src={service ? (serviceImages[service.name] || houseCleaning) : houseCleaning}
+                        src={service ? (serviceImages[service.category] || houseCleaning) : houseCleaning}
                         alt={service?.name}
                         className="w-full h-full object-cover"
                     />

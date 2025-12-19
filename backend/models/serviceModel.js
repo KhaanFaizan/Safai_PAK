@@ -26,7 +26,7 @@ const serviceSchema = mongoose.Schema(
         category: {
             type: String,
             required: [true, 'Please add a category'],
-            enum: ['Pest Control', 'Sanitation & Cleaning', 'Agricultural Services'],
+            enum: ['House Cleaning', 'Pest Control', 'Agricultural Services', 'Deep Sanitation', 'Office Cleaning'],
         },
     },
     {

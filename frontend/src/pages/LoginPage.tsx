@@ -23,7 +23,12 @@ const LoginPage = () => {
         try {
             const { data } = await api.post('/auth/login', { email, password });
             login(data.token, { _id: data._id, name: data.name, email: data.email, role: data.role });
-            navigate('/services'); // Redirect to listing after login
+
+            if (data.role === 'provider') {
+                navigate('/provider/dashboard');
+            } else {
+                navigate('/services');
+            }
         } catch (err: any) {
             setError(err.response?.data?.message || 'Login failed');
         } finally {

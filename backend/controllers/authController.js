@@ -30,6 +30,7 @@ const registerUser = asyncHandler(async (req, res) => {
         phone,
         city,
         role: role || 'customer',
+        isVerified: true, // Auto-verify for MVP to allow immediate service creation
     });
 
     if (user) {

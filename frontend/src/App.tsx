@@ -15,6 +15,13 @@ import BookingPage from './pages/BookingPage';
 import MyBookings from './pages/MyBookings';
 import { Button } from './components/ui/Button';
 
+// Provider Pages
+import ProviderLayout from './components/layouts/ProviderLayout';
+import ProviderDashboard from './pages/provider/ProviderDashboard';
+import ProviderServices from './pages/provider/ProviderServices';
+import ProviderBookings from './pages/provider/ProviderBookings';
+import ProviderEarnings from './pages/provider/ProviderEarnings';
+
 // Navbar Component
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext)!;
@@ -33,8 +40,15 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="text-2xl font-bold text-primary-600">SafaiPak</Link>
             <div className="hidden md:ml-6 md:flex md:space-x-8">
-              <Link to="/services" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('services')}</Link>
-              {user && <Link to="/bookings" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('myBookings')}</Link>}
+              {(!user || user.role === 'customer') && (
+                <>
+                  <Link to="/services" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('services')}</Link>
+                  {user && <Link to="/bookings" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('myBookings')}</Link>}
+                </>
+              )}
+              {user?.role === 'provider' && (
+                <Link to="/provider/dashboard" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('dashboard')}</Link>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -80,10 +94,20 @@ function App() {
                 <Route path="/services" element={<ServiceListing />} />
                 <Route path="/services/:id" element={<ServiceDetails />} />
 
-                <Route element={<ProtectedRoute />}>
+                <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/book/:serviceId" element={<BookingPage />} />
                   <Route path="/bookings" element={<MyBookings />} />
+                </Route>
+
+                {/* Provider Routes */}
+                <Route element={<ProtectedRoute allowedRoles={['provider']} />}>
+                  <Route element={<ProviderLayout />}>
+                    <Route path="/provider/dashboard" element={<ProviderDashboard />} />
+                    <Route path="/provider/services" element={<ProviderServices />} />
+                    <Route path="/provider/bookings" element={<ProviderBookings />} />
+                    <Route path="/provider/earnings" element={<ProviderEarnings />} />
+                  </Route>
                 </Route>
               </Routes>
             </main>

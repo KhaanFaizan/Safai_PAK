@@ -51,7 +51,7 @@ const seedData = async () => {
                 name: 'House Cleaning',
                 description: 'Complete house cleaning service including dusting, mopping, and vacuuming. We use eco-friendly products.',
                 price: 2500,
-                category: 'Sanitation & Cleaning',
+                category: 'House Cleaning',
                 duration: '3 hours'
             },
             {
@@ -75,7 +75,7 @@ const seedData = async () => {
                 name: 'Deep Sanitation',
                 description: 'Disinfect your entire home or office.',
                 price: 4000,
-                category: 'Sanitation & Cleaning',
+                category: 'Deep Sanitation',
                 duration: '4 hours'
             },
             {
@@ -83,7 +83,7 @@ const seedData = async () => {
                 name: 'Office Cleaning',
                 description: 'Professional office cleaning service.',
                 price: 1200,
-                category: 'Sanitation & Cleaning',
+                category: 'Office Cleaning',
                 duration: '2 hours'
             }
         ];

@@ -14,9 +14,11 @@ const RegisterPage = () => {
         name: '',
         email: '',
         phone: '',
+        phone: '',
         city: '',
         password: '',
         confirmPassword: '',
+        role: 'customer',
     });
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -44,7 +46,9 @@ const RegisterPage = () => {
                 phone: formData.phone,
                 city: formData.city,
                 password: formData.password,
-                role: 'customer', // Default to customer
+                city: formData.city,
+                password: formData.password,
+                role: formData.role,
             });
             // On success, redirect to login
             navigate('/login');
@@ -102,6 +106,34 @@ const RegisterPage = () => {
                         required
                         placeholder="Lahore"
                     />
+
+                    <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-gray-700">{t('role') || 'I am a'}</label>
+                        <div className="flex gap-4">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="customer"
+                                    checked={formData.role === 'customer'}
+                                    onChange={handleChange}
+                                    className="w-4 h-4 text-primary-600 focus:ring-primary-500"
+                                />
+                                <span className="text-gray-900">Customer</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="provider"
+                                    checked={formData.role === 'provider'}
+                                    onChange={handleChange}
+                                    className="w-4 h-4 text-primary-600 focus:ring-primary-500"
+                                />
+                                <span className="text-gray-900">Service Provider</span>
+                            </label>
+                        </div>
+                    </div>
 
                     <div className="relative">
                         <Input

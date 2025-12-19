@@ -16,8 +16,8 @@ import officeCleaning from '../assets/images/office-cleaning-service.jpeg';
 
 const serviceImages: Record<string, string> = {
     'House Cleaning': houseCleaning,
-    'Pest Control Service': pestControl,
-    'Agricultural Spray': agriSpray,
+    'Pest Control': pestControl,
+    'Agricultural Services': agriSpray,
     'Deep Sanitation': deepSanitation,
     'Office Cleaning': officeCleaning,
 };
@@ -87,7 +87,7 @@ const ServiceListing = () => {
                         {/* Placeholder Image */}
                         <div className="h-48 overflow-hidden rounded-t-lg mb-4">
                             <img
-                                src={serviceImages[service.name] || houseCleaning}
+                                src={serviceImages[service.category] || houseCleaning}
                                 alt={service.name}
                                 className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
                             />
