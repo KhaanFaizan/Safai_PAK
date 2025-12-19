@@ -8,6 +8,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const userRoutes = require('./routes/userRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
@@ -28,6 +29,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Error Handling
 app.use(notFound);
