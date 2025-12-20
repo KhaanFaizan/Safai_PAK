@@ -17,7 +17,7 @@ const RegisterPage = () => {
         city: '',
         password: '',
         confirmPassword: '',
-        role: 'customer',
+        role: '',
     });
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -110,41 +110,18 @@ const RegisterPage = () => {
 
                     <div className="flex flex-col gap-2">
                         <label className="text-sm font-medium text-gray-700">{t('role') || 'I am a'}</label>
-                        <div className="flex gap-4">
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="role"
-                                    value="customer"
-                                    checked={formData.role === 'customer'}
-                                    onChange={handleChange}
-                                    className="w-4 h-4 text-primary-600 focus:ring-primary-500"
-                                />
-                                <span className="text-gray-900">Customer</span>
-                            </label>
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="role"
-                                    value="provider"
-                                    checked={formData.role === 'provider'}
-                                    onChange={handleChange}
-                                    className="w-4 h-4 text-primary-600 focus:ring-primary-500"
-                                />
-                                <span className="text-gray-900">Service Provider</span>
-                            </label>
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="role"
-                                    value="admin"
-                                    checked={formData.role === 'admin'}
-                                    onChange={handleChange}
-                                    className="w-4 h-4 text-primary-600 focus:ring-primary-500"
-                                />
-                                <span className="text-gray-900">Admin</span>
-                            </label>
-                        </div>
+                        <select
+                            name="role"
+                            value={formData.role}
+                            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:outline-none bg-white"
+                            required
+                        >
+                            <option value="" disabled>Select Role</option>
+                            <option value="customer">Customer</option>
+                            <option value="provider">Service Provider</option>
+                            <option value="admin">Admin</option>
+                        </select>
                     </div>
 
                     <div className="relative">
