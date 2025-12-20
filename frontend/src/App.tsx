@@ -30,6 +30,8 @@ import AdminAllUsers from './pages/admin/AdminAllUsers';
 import Navbar from './components/layouts/Navbar';
 import Footer from './components/layouts/Footer';
 import HowItWorksPage from './pages/HowItWorksPage';
+import ContactPage from './pages/ContactPage';
+import AboutPage from './pages/AboutPage';
 import { Loader } from './components/ui/Loader';
 
 const AppContent = () => {
@@ -53,6 +55,8 @@ const AppContent = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/how-it-works" element={<HowItWorksPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 

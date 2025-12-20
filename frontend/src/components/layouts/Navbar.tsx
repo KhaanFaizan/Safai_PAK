@@ -68,10 +68,9 @@ const Navbar = () => {
                         )}
 
                         {!user && (
-                            <Link to="/register?role=provider" className="text-gray-300 hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Contact Us</Link>
+                            <NavLink to="/contact">Contact Us</NavLink>
                         )}
-
-                        <Link to="#" className="text-gray-300 hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">About</Link>
+                        <NavLink to="/about">About</NavLink>
                     </nav>
 
                     {/* Right Actions (Desktop) */}
@@ -168,9 +167,9 @@ const Navbar = () => {
                             )}
 
                             {!user && (
-                                <Link to="/register?role=provider" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">Contact Us</Link>
+                                <Link to="/contact" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">Contact Us</Link>
                             )}
-                            <Link to="#" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">About</Link>
+                            <Link to="/about" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">About</Link>
                         </div>
 
                         <div className="pt-4 border-t border-gray-800 mt-4">
