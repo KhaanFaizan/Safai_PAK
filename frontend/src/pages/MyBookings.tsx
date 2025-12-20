@@ -4,6 +4,7 @@ import api from '../utils/api';
 import { Card } from '../components/ui/Card';
 import { Loader } from '../components/ui/Loader';
 import { Button } from '../components/ui/Button';
+import { BackButton } from '../components/common/BackButton';
 import { useLanguage } from '../context/LanguageContext';
 import { Calendar, Clock, MapPin, DollarSign, AlertCircle } from 'lucide-react';
 
@@ -52,7 +53,8 @@ const MyBookings = () => {
     if (loading) return <Loader />;
 
     return (
-        <div className="container mx-auto px-4 py-12">
+        <div className="max-w-[1440px] mx-auto px-4 py-12">
+            <BackButton className="mb-6" />
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold text-gray-900">{t('myBookings')}</h1>
                 <Button variant="outline" onClick={() => navigate('/services')}>

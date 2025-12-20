@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import { Button } from '../components/ui/Button';
+import { BackButton } from '../components/common/BackButton';
 import { Input } from '../components/ui/Input';
 import { Card } from '../components/ui/Card';
 import { useLanguage } from '../context/LanguageContext';
@@ -56,6 +57,7 @@ const BookingPage = () => {
     return (
         <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <Card className="max-w-xl mx-auto p-8">
+                <BackButton className="mb-6" />
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('bookNow')}</h2>
                 <p className="text-gray-500 mb-8">Service: <span className="font-semibold text-primary-600">{serviceName}</span></p>
 

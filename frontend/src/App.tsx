@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -27,72 +27,14 @@ import AdminLayout from './components/layouts/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProviders from './pages/admin/AdminProviders';
 import AdminAllUsers from './pages/admin/AdminAllUsers';
-
-// Navbar Component
-const Navbar = () => {
-  const { user, logout } = useContext(AuthContext)!;
-  const { t, language, toggleLanguage } = useLanguage();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
-  return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="text-2xl font-bold text-primary-600">SafaiPak</Link>
-            <div className="hidden md:ml-6 md:flex md:space-x-8">
-              {(!user || user.role === 'customer') && (
-                <>
-                  <Link to="/services" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('services')}</Link>
-                  {user && <Link to="/bookings" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('myBookings')}</Link>}
-                </>
-              )}
-              {user?.role === 'provider' && (
-                <Link to="/provider/dashboard" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">{t('dashboard')}</Link>
-              )}
-              {user?.role === 'admin' && (
-                <Link to="/admin/dashboard" className="text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 font-medium">Admin Panel</Link>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" onClick={toggleLanguage} className="px-3 py-1 text-sm">
-              {language === 'en' ? 'Urdu' : 'English'}
-            </Button>
-
-            {user ? (
-              <div className="flex items-center gap-4">
-                <span className="hidden md:block text-sm font-medium text-gray-700">
-                  {t('welcome')}, {user.name}
-                </span>
-                <Button onClick={handleLogout} variant="secondary" className="text-sm">
-                  {t('logout')}
-                </Button>
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                <Link to="/login"><Button variant="outline">{t('login')}</Button></Link>
-                <Link to="/register"><Button>{t('register')}</Button></Link>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-};
-
+import Navbar from './components/layouts/Navbar';
+import Footer from './components/layouts/Footer';
+import HowItWorksPage from './pages/HowItWorksPage';
 import { Loader } from './components/ui/Loader';
-
-// ...
 
 const AppContent = () => {
   const { loading } = useContext(AuthContext)!;
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -102,12 +44,15 @@ const AppContent = () => {
     );
   }
 
+  const showFooter = !['/login', '/register'].includes(location.pathname);
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
-      <main>
+      <main className="flex-grow">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/how-it-works" element={<HowItWorksPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
@@ -139,6 +84,7 @@ const AppContent = () => {
           </Route>
         </Routes>
       </main>
+      {showFooter && <Footer />}
     </div>
   );
 };

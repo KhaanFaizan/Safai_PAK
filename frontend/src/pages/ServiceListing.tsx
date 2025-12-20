@@ -4,6 +4,7 @@ import api from '../utils/api';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Loader } from '../components/ui/Loader';
+import { BackButton } from '../components/common/BackButton';
 import { useLanguage } from '../context/LanguageContext';
 import { Search, DollarSign } from 'lucide-react';
 
@@ -63,7 +64,8 @@ const ServiceListing = () => {
     if (loading) return <Loader />;
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="max-w-[1440px] mx-auto px-4 py-8">
+            <BackButton className="mb-6" />
             {/* Header / Search */}
             <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                 <h1 className="text-3xl font-bold text-gray-900">{t('services')}</h1>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import { Button } from '../components/ui/Button';
+import { BackButton } from '../components/common/BackButton';
 import { Loader } from '../components/ui/Loader';
 import { useLanguage } from '../context/LanguageContext';
 import { CheckCircle, Clock, DollarSign } from 'lucide-react';
@@ -74,6 +75,7 @@ const ServiceDetails = () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <BackButton />
             <div className="grid md:grid-cols-2 gap-8">
                 {/* Image Section */}
                 <div className="h-96 rounded-xl overflow-hidden shadow-md">
