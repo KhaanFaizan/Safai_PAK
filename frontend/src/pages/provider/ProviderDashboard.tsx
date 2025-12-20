@@ -19,6 +19,30 @@ const ProviderDashboard = () => {
             <header className="mb-8">
                 <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
                 <p className="text-gray-500">Welcome back, {user?.name}</p>
+
+                {user?.isSuspended && (
+                    <div className="bg-red-50 border-l-4 border-red-500 p-4 mt-4">
+                        <div className="flex">
+                            <div className="ml-3">
+                                <p className="text-sm text-red-700">
+                                    <span className="font-bold">Account Suspended:</span> Your interactions are currently restricted. Please contact support.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {user?.role === 'provider' && !user?.isVerified && !user?.isSuspended && (
+                    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                        <div className="flex">
+                            <div className="ml-3">
+                                <p className="text-sm text-yellow-700">
+                                    <span className="font-bold">Pending Verification:</span> You cannot create new services until an admin approves your account.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </header>
 
             {/* Stats Grid */}

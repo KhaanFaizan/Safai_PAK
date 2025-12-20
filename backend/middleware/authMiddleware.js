@@ -19,10 +19,8 @@ const protect = asyncHandler(async (req, res, next) => {
             // Get user from the token
             req.user = await User.findById(decoded.id).select('-password');
 
-            if (req.user && req.user.isSuspended) {
-                res.status(403);
-                throw new Error('Your account is suspended.');
-            }
+            // Removed strict suspension check here to allow Read-Only access
+            // if (req.user && req.user.isSuspended) { ... }
 
             next();
         } catch (error) {
@@ -60,5 +58,14 @@ const verifiedProviderOnly = (req, res, next) => {
     }
 };
 
-module.exports = { protect, authorize, verifiedProviderOnly };
+const activeUserOnly = (req, res, next) => {
+    if (req.user && !req.user.isSuspended) {
+        next();
+    } else {
+        res.status(403);
+        throw new Error('Your account is suspended. Action not allowed.');
+    }
+};
+
+module.exports = { protect, authorize, verifiedProviderOnly, activeUserOnly };
 

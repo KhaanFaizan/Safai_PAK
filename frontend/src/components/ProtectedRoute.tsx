@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { Loader } from './ui/Loader';
 
 interface ProtectedRouteProps {
     allowedRoles?: string[];
@@ -9,8 +10,10 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
     const auth = useContext(AuthContext);
 
+    // ...
+
     if (auth?.loading) {
-        return <div>Loading...</div>;
+        return <div className="flex justify-center items-center h-screen"><Loader /></div>;
     }
 
     if (!auth?.user) {

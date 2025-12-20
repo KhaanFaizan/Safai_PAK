@@ -80,14 +80,22 @@ const ProviderServices = () => {
 
     if (loading) return <Loader />;
 
+    const canAddService = user?.isVerified && !user?.isSuspended;
+
     return (
         <div className="p-8">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-2xl font-bold text-gray-900">Manage Services</h1>
-                <Button onClick={() => setShowForm(!showForm)}>
-                    <Plus size={20} className="mr-2" />
-                    Add Service
-                </Button>
+                {canAddService ? (
+                    <Button onClick={() => setShowForm(!showForm)}>
+                        <Plus size={20} className="mr-2" />
+                        Add Service
+                    </Button>
+                ) : (
+                    <div className="text-sm text-gray-500 italic bg-gray-100 px-4 py-2 rounded-lg">
+                        {user?.isSuspended ? 'Account Suspended' : 'Verification Pending'}
+                    </div>
+                )}
             </div>
 
             {/* Quick Add Form (Collapsible) */}

@@ -30,7 +30,7 @@ const registerUser = asyncHandler(async (req, res) => {
         phone,
         city,
         role: role || 'customer',
-        isVerified: true, // Auto-verify for MVP to allow immediate service creation
+        isVerified: false, // Pending admin approval
     });
 
     if (user) {
@@ -39,6 +39,8 @@ const registerUser = asyncHandler(async (req, res) => {
             name: user.name,
             email: user.email,
             role: user.role,
+            isVerified: user.isVerified,
+            isSuspended: user.isSuspended,
             token: generateToken(user._id),
         });
     } else {
@@ -57,17 +59,15 @@ const loginUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-
-        if (user.isSuspended) {
-            res.status(403);
-            throw new Error('Your account has been suspended. Please contact support.');
-        }
+        // Suspended users CAN login now (read-only), but actions will be blocked by middleware
 
         res.json({
             _id: user.id,
             name: user.name,
             email: user.email,
             role: user.role,
+            isVerified: user.isVerified,
+            isSuspended: user.isSuspended,
             token: generateToken(user._id),
         });
     } else {

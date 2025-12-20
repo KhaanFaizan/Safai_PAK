@@ -87,49 +87,69 @@ const Navbar = () => {
   );
 };
 
+import { Loader } from './components/ui/Loader';
+
+// ...
+
+const AppContent = () => {
+  const { loading } = useContext(AuthContext)!;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      <main>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          <Route path="/services" element={<ServiceListing />} />
+          <Route path="/services/:id" element={<ServiceDetails />} />
+
+          <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/book/:serviceId" element={<BookingPage />} />
+            <Route path="/bookings" element={<MyBookings />} />
+          </Route>
+
+          {/* Provider Routes */}
+          <Route element={<ProtectedRoute allowedRoles={['provider']} />}>
+            <Route element={<ProviderLayout />}>
+              <Route path="/provider/dashboard" element={<ProviderDashboard />} />
+              <Route path="/provider/services" element={<ProviderServices />} />
+              <Route path="/provider/bookings" element={<ProviderBookings />} />
+              <Route path="/provider/earnings" element={<ProviderEarnings />} />
+            </Route>
+          </Route>
+
+          <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+            <Route element={<AdminLayout />}>
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/providers" element={<AdminProviders />} />
+              <Route path="/admin/all-users" element={<AdminAllUsers />} />
+            </Route>
+          </Route>
+        </Routes>
+      </main>
+    </div>
+  );
+};
+
 function App() {
   return (
     // Main App Provider Wrapper
     <AuthProvider>
       <LanguageProvider>
         <Router>
-          <div className="min-h-screen bg-white">
-            <Navbar />
-            <main>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-
-                <Route path="/services" element={<ServiceListing />} />
-                <Route path="/services/:id" element={<ServiceDetails />} />
-
-                <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
-                  <Route path="/dashboard" element={<DashboardPage />} />
-                  <Route path="/book/:serviceId" element={<BookingPage />} />
-                  <Route path="/bookings" element={<MyBookings />} />
-                </Route>
-
-                {/* Provider Routes */}
-                <Route element={<ProtectedRoute allowedRoles={['provider']} />}>
-                  <Route element={<ProviderLayout />}>
-                    <Route path="/provider/dashboard" element={<ProviderDashboard />} />
-                    <Route path="/provider/services" element={<ProviderServices />} />
-                    <Route path="/provider/bookings" element={<ProviderBookings />} />
-                    <Route path="/provider/earnings" element={<ProviderEarnings />} />
-                  </Route>
-                </Route>
-
-                <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-                  <Route element={<AdminLayout />}>
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/providers" element={<AdminProviders />} />
-                    <Route path="/admin/all-users" element={<AdminAllUsers />} />
-                  </Route>
-                </Route>
-              </Routes>
-            </main>
-          </div>
+          <AppContent />
         </Router>
       </LanguageProvider>
     </AuthProvider>

@@ -6,6 +6,8 @@ interface User {
     name: string;
     email: string;
     role: 'customer' | 'provider' | 'admin';
+    isVerified?: boolean;
+    isSuspended?: boolean;
 }
 
 interface AuthContextType {
