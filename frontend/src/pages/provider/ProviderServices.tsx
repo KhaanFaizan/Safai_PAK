@@ -4,7 +4,7 @@ import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Loader } from '../../components/ui/Loader';
 import { Input } from '../../components/ui/Input';
-import { Plus, Trash2, Edit } from 'lucide-react';
+import { Plus, Trash2, Edit2, X, AlertTriangle } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 
 interface Service {
@@ -14,6 +14,7 @@ interface Service {
     category: string;
     duration: string;
     description: string;
+    user?: any;
 }
 
 const ProviderServices = () => {
@@ -21,6 +22,7 @@ const ProviderServices = () => {
     const [services, setServices] = useState<Service[]>([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
+    const [editingService, setEditingService] = useState<Service | null>(null);
 
     // Form State
     const [formData, setFormData] = useState({
@@ -37,13 +39,8 @@ const ProviderServices = () => {
 
     const fetchServices = async () => {
         try {
-            // TODO: Backend should have endpoint to get "my services" or we filter client side?
-            // Existing serviceController `getServices` has provider filter logic if we pass provider ID?
-            // Actually, best to add "GET /services?user={id}" or assume auth provider sees all for now and we filter.
-            // Let's try fetching all and filtering by user._id for MVP. 
-            // Ideally backend should have `GET /services/my-services`. 
             const { data } = await api.get('/services');
-            // Data is { services: [], page, pages }
+            // Filter services for current provider
             const myServices = data.services.filter((s: any) => s.user?._id === user?._id || s.user === user?._id);
             setServices(myServices);
         } catch (error) {
@@ -54,7 +51,7 @@ const ProviderServices = () => {
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm('Are you sure?')) return;
+        if (!confirm('Are you sure you want to delete this service?')) return;
         try {
             await api.delete(`/services/${id}`);
             setServices(services.filter(s => s._id !== id));
@@ -63,18 +60,45 @@ const ProviderServices = () => {
         }
     };
 
+    const handleEditClick = (service: Service) => {
+        setEditingService(service);
+        setFormData({
+            name: service.name,
+            description: service.description,
+            price: service.price.toString(),
+            duration: service.duration,
+            category: service.category
+        });
+        setShowForm(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const resetForm = () => {
+        setFormData({ name: '', description: '', price: '', duration: '', category: 'Cleaning' });
+        setEditingService(null);
+        setShowForm(false);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const { data } = await api.post('/services', {
+            const payload = {
                 ...formData,
                 price: Number(formData.price)
-            });
-            setServices([...services, data]);
-            setShowForm(false);
-            setFormData({ name: '', description: '', price: '', duration: '', category: 'Cleaning' });
+            };
+
+            if (editingService) {
+                // Update existing service
+                const { data } = await api.put(`/services/${editingService._id}`, payload);
+                setServices(services.map(s => s._id === editingService._id ? data : s));
+            } else {
+                // Create new service
+                const { data } = await api.post('/services', payload);
+                setServices([...services, data]);
+            }
+            resetForm();
         } catch (error: any) {
-            alert(error.response?.data?.message || 'Failed to create service');
+            alert(error.response?.data?.message || 'Failed to save service');
         }
     };
 
@@ -83,36 +107,47 @@ const ProviderServices = () => {
     const canAddService = user?.isVerified && !user?.isSuspended;
 
     return (
-        <div className="p-8">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-2xl font-bold text-gray-900">Manage Services</h1>
+        <div className="space-y-8">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                <div>
+                    <h1 className="text-2xl font-bold text-white">My Services</h1>
+                    <p className="text-gray-400">Manage the services you offer to customers.</p>
+                </div>
+
                 {canAddService ? (
-                    <Button onClick={() => setShowForm(!showForm)}>
-                        <Plus size={20} className="mr-2" />
-                        Add Service
+                    <Button onClick={() => { resetForm(); setShowForm(!showForm); }}>
+                        {showForm ? <X size={20} className="mr-2" /> : <Plus size={20} className="mr-2" />}
+                        {showForm ? 'Cancel' : 'Add Service'}
                     </Button>
                 ) : (
-                    <div className="text-sm text-gray-500 italic bg-gray-100 px-4 py-2 rounded-lg">
+                    <div className="flex items-center gap-2 text-sm text-yellow-400 bg-yellow-900/20 px-4 py-2 rounded-lg border border-yellow-500/30">
+                        <AlertTriangle size={16} />
                         {user?.isSuspended ? 'Account Suspended' : 'Verification Pending'}
                     </div>
                 )}
             </div>
 
-            {/* Quick Add Form (Collapsible) */}
+            {/* Service Form (Collapsible) */}
             {showForm && (
-                <Card className="mb-8 p-6 bg-gray-50 border-primary-200">
-                    <h3 className="font-bold mb-4">Add New Service</h3>
-                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Input
-                            label="Service Name"
-                            value={formData.name}
-                            onChange={e => setFormData({ ...formData, name: e.target.value })}
-                            required
-                        />
-                        <div className="flex flex-col gap-1">
-                            <label className="text-sm font-medium text-gray-700">Category</label>
+                <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6 shadow-xl animate-in slide-in-from-top-4">
+                    <h3 className="text-xl font-bold text-white mb-6 border-b border-gray-700 pb-4">
+                        {editingService ? 'Edit Service' : 'Add New Service'}
+                    </h3>
+                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <Input
+                                label="Service Name"
+                                value={formData.name}
+                                onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                required
+                                className="bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                placeholder="e.g. Full House Cleaning"
+                            />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-sm font-medium text-gray-300">Category</label>
                             <select
-                                className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-primary-500"
+                                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
                                 value={formData.category}
                                 onChange={e => setFormData({ ...formData, category: e.target.value })}
                             >
@@ -123,68 +158,105 @@ const ProviderServices = () => {
                                 <option value="Office Cleaning">Office Cleaning</option>
                             </select>
                         </div>
-                        <Input
-                            label="Price (PKR)"
-                            type="number"
-                            value={formData.price}
-                            onChange={e => setFormData({ ...formData, price: e.target.value })}
-                            required
-                        />
-                        <Input
-                            label="Duration (e.g. 2 hours)"
-                            value={formData.duration}
-                            onChange={e => setFormData({ ...formData, duration: e.target.value })}
-                            required
-                        />
-                        <div className="md:col-span-2">
+                        <div>
                             <Input
-                                label="Description"
+                                label="Price (PKR)"
+                                type="number"
+                                value={formData.price}
+                                onChange={e => setFormData({ ...formData, price: e.target.value })}
+                                required
+                                className="bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                placeholder="0.00"
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                label="Duration"
+                                value={formData.duration}
+                                onChange={e => setFormData({ ...formData, duration: e.target.value })}
+                                required
+                                className="bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                placeholder="e.g. 2 hours"
+                            />
+                        </div>
+                        <div className="md:col-span-2">
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                            <textarea
+                                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all h-32 resize-none"
                                 value={formData.description}
                                 onChange={e => setFormData({ ...formData, description: e.target.value })}
                                 required
+                                placeholder="Describe your service in detail..."
                             />
                         </div>
-                        <div className="md:col-span-2 flex justify-end gap-2 mt-4">
-                            <Button type="button" variant="secondary" onClick={() => setShowForm(false)}>Cancel</Button>
-                            <Button type="submit">Create Service</Button>
+                        <div className="md:col-span-2 flex justify-end gap-3 mt-2">
+                            <Button type="button" variant="secondary" onClick={resetForm} className="bg-gray-700 hover:bg-gray-600 border-transparent text-white">
+                                Cancel
+                            </Button>
+                            <Button type="submit">
+                                {editingService ? 'Update Service' : 'Create Service'}
+                            </Button>
                         </div>
                     </form>
-                </Card>
+                </div>
             )}
 
-            {/* Services List */}
+            {/* Services Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {services.map(service => (
-                    <Card key={service._id} className="relative group">
-                        <div className="p-4">
-                            <div className="flex justify-between items-start mb-2">
-                                <span className="bg-primary-50 text-primary-700 text-xs px-2 py-1 rounded uppercase font-bold">
+                    <div
+                        key={service._id}
+                        className="group bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden hover:border-gray-600 hover:shadow-lg transition-all duration-300 flex flex-col"
+                    >
+                        <div className="p-6 flex-1">
+                            <div className="flex justify-between items-start mb-4">
+                                <span className="bg-primary-900/30 text-primary-400 text-xs px-2 py-1 rounded-full uppercase font-bold tracking-wide border border-primary-500/20">
                                     {service.category}
                                 </span>
-                                <span className="font-bold text-gray-900">PKR {service.price}</span>
+                                <span className="text-lg font-bold text-white">PKR {service.price.toLocaleString()}</span>
                             </div>
-                            <h3 className="text-lg font-bold mb-1">{service.name}</h3>
-                            <p className="text-gray-500 text-sm h-10 line-clamp-2">{service.description}</p>
-                            <p className="text-xs text-gray-400 mt-2 flex items-center gap-1">
+                            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary-400 transition-colors">{service.name}</h3>
+                            <p className="text-gray-400 text-sm line-clamp-2 mb-4">{service.description}</p>
+                            <div className="text-xs text-gray-500 flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-gray-600"></span>
                                 Duration: {service.duration}
-                            </p>
+                            </div>
                         </div>
-                        <div className="flex border-t border-gray-100">
-                            <button className="flex-1 py-3 text-sm text-gray-600 hover:bg-gray-50 font-medium flex items-center justify-center gap-2">
-                                <Edit size={16} /> Edit
+
+                        <div className="flex border-t border-gray-700 bg-gray-900/30">
+                            <button
+                                onClick={() => handleEditClick(service)}
+                                className="flex-1 py-3 text-sm text-gray-400 hover:text-white hover:bg-gray-700 font-medium flex items-center justify-center gap-2 transition-colors"
+                            >
+                                <Edit2 size={16} /> Edit
                             </button>
+                            <div className="w-px bg-gray-700"></div>
                             <button
                                 onClick={() => handleDelete(service._id)}
-                                className="flex-1 py-3 text-sm text-red-600 hover:bg-red-50 font-medium flex items-center justify-center gap-2 border-l border-gray-100"
+                                className="flex-1 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-red-900/20 font-medium flex items-center justify-center gap-2 transition-colors"
                             >
                                 <Trash2 size={16} /> Delete
                             </button>
                         </div>
-                    </Card>
+                    </div>
                 ))}
             </div>
+
             {services.length === 0 && !loading && (
-                <p className="text-gray-500 text-center">You haven't listed any services yet.</p>
+                <div className="text-center py-20 bg-gray-800/50 border border-gray-700 border-dashed rounded-2xl">
+                    <div className="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-600">
+                        <Plus size={32} />
+                    </div>
+                    <h3 className="text-xl font-medium text-white">No services listed yet</h3>
+                    <p className="text-gray-400 mt-2 max-w-sm mx-auto mb-6">
+                        Get started by adding your first service to start receiving bookings.
+                    </p>
+                    {canAddService && (
+                        <Button onClick={() => setShowForm(true)}>
+                            Create Service
+                        </Button>
+                    )}
+                </div>
             )}
         </div>
     );
