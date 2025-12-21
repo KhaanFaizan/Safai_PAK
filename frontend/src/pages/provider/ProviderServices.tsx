@@ -30,7 +30,7 @@ const ProviderServices = () => {
         description: '',
         price: '',
         duration: '',
-        category: 'Cleaning' // Default
+        category: 'House Cleaning' // Default
     });
 
     useEffect(() => {
@@ -74,7 +74,7 @@ const ProviderServices = () => {
     };
 
     const resetForm = () => {
-        setFormData({ name: '', description: '', price: '', duration: '', category: 'Cleaning' });
+        setFormData({ name: '', description: '', price: '', duration: '', category: 'House Cleaning' });
         setEditingService(null);
         setShowForm(false);
     };

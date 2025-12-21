@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { Button } from '../ui/Button';
 import { Menu, X, User, LogOut } from 'lucide-react';
+import NotificationBell from '../ui/NotificationBell';
 
 
 const Navbar = () => {
@@ -85,6 +86,7 @@ const Navbar = () => {
 
                         {user ? (
                             <div className="flex items-center gap-3">
+                                <NotificationBell />
                                 <div className="flex items-center gap-2 text-base font-medium text-gray-200">
                                     <div className="h-9 w-9 rounded-full bg-gray-800 flex items-center justify-center text-primary-400 border border-gray-700">
                                         <User size={18} />
@@ -133,8 +135,11 @@ const Navbar = () => {
                                     {user.name.charAt(0)}
                                 </div>
                                 <div>
-                                    <p className="font-bold text-white">{user.name}</p>
+                                    <p className="font-bold text-white mb-1">{user.name}</p>
                                     <p className="text-xs text-gray-400 capitalize">{user.role}</p>
+                                </div>
+                                <div className="ml-auto">
+                                    <NotificationBell />
                                 </div>
                             </div>
                         )}

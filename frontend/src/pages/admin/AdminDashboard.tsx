@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import { Loader } from '../../components/ui/Loader';
-import { Users, Briefcase, UserCheck, Shield, ChevronRight, Activity, Bell } from 'lucide-react';
+import { Users, Briefcase, UserCheck, Shield, ChevronRight, Activity } from 'lucide-react';
+import NotificationBell from '../../components/ui/NotificationBell';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -57,12 +58,7 @@ const AdminDashboard = () => {
                     <h1 className="text-2xl font-bold text-white">Platform Overview</h1>
                     <p className="text-gray-400 mt-1">Summary of system performance and metrics.</p>
                 </div>
-                <div className="p-2 bg-gray-800 rounded-full border border-gray-700 text-gray-400 relative">
-                    <Bell size={20} />
-                    {data.stats.pendingProviders > 0 && (
-                        <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-gray-800"></span>
-                    )}
-                </div>
+                <NotificationBell />
             </div>
 
             {/* Stats Grid */}
