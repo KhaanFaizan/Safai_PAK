@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import api from '../../utils/api';
 import { Button } from '../../components/ui/Button';
 import { Loader } from '../../components/ui/Loader';
-import { Calendar, MapPin, User, Phone, CheckCircle, XCircle, Filter, Inbox } from 'lucide-react';
+import { BackButton } from '../../components/ui/BackButton';
+import { Calendar, MapPin, User, Phone, CheckCircle, XCircle, Inbox } from 'lucide-react';
 
 interface Booking {
     _id: string;
@@ -69,6 +70,7 @@ const ProviderBookings = () => {
 
     return (
         <div className="space-y-8">
+            <BackButton to="/provider/dashboard" className="text-gray-400 hover:text-white" />
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-white">Manage Bookings</h1>
@@ -81,8 +83,8 @@ const ProviderBookings = () => {
                             key={f}
                             onClick={() => setFilter(f)}
                             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all capitalize ${filter === f
-                                    ? 'bg-gray-700 text-white shadow-sm'
-                                    : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+                                ? 'bg-gray-700 text-white shadow-sm'
+                                : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
                                 }`}
                         >
                             {f}

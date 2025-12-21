@@ -1,11 +1,11 @@
 import { useEffect, useState, useContext } from 'react';
 import api from '../../utils/api';
 import { Button } from '../../components/ui/Button';
-import { Card } from '../../components/ui/Card';
 import { Loader } from '../../components/ui/Loader';
 import { Input } from '../../components/ui/Input';
 import { Plus, Trash2, Edit2, X, AlertTriangle } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
+import { BackButton } from '../../components/ui/BackButton';
 
 interface Service {
     _id: string;
@@ -108,6 +108,7 @@ const ProviderServices = () => {
 
     return (
         <div className="space-y-8">
+            <BackButton to="/provider/dashboard" className="text-gray-400 hover:text-white" />
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-white">My Services</h1>

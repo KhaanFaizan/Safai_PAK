@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { Button, cn } from './Button';
+import { cn } from './Button';
 
 interface BackButtonProps {
     to?: string;
@@ -20,16 +20,16 @@ export const BackButton = ({ to, label = 'Back', className }: BackButtonProps) =
     };
 
     return (
-        <Button
-            variant="outline" // Using outline for a clean but distinct look
+        <button
             onClick={handleBack}
             className={cn(
-                "border py-2 px-3 text-sm flex items-center gap-2 hover:bg-gray-50 transition-colors mb-4 text-gray-700 border-gray-300",
+                "group flex items-center gap-2 text-sm font-medium transition-colors mb-6",
+                "text-gray-600 hover:text-gray-900", // Default light mode colors
                 className
             )}
         >
-            <ArrowLeft size={16} />
-            {label}
-        </Button>
+            <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-1" />
+            <span>{label}</span>
+        </button>
     );
 };
