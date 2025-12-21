@@ -5,12 +5,13 @@ import { useLanguage } from '../context/LanguageContext';
 import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Card } from '../components/ui/Card';
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 
 const LoginPage = () => {
     const { t } = useLanguage();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const { login } = useContext(AuthContext)!;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -32,50 +33,89 @@ const LoginPage = () => {
                 navigate('/services');
             }
         } catch (err: any) {
-            setError(err.response?.data?.message || 'Login failed');
+            setError(err.response?.data?.message || 'Login failed. Please checks your credentials.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-8">
-            <Card className="w-full max-w-lg p-8">
-                <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">{t('login')}</h2>
+        <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4 py-12">
+            <div className="w-full max-w-md">
+                {/* Header Logo/Text */}
+                <div className="text-center mb-8">
+                    <h1 className="text-3xl font-bold text-white mb-2">{t('login')}</h1>
+                    <p className="text-gray-400">Welcome back! Please enter your details.</p>
+                </div>
 
-                {error && (
-                    <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4 text-sm">
-                        {error}
+                <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-xl">
+                    {error && (
+                        <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl mb-6 text-sm flex items-start gap-2">
+                            <span>•</span> {error}
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300 ml-1">{t('email')}</label>
+                            <div className="relative">
+                                <Input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    placeholder="Enter your email"
+                                    className="pl-10 bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                />
+                                <Mail size={18} className="absolute left-3 top-3 text-gray-500" />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300 ml-1">{t('password')}</label>
+                            <div className="relative">
+                                <Input
+                                    type={showPassword ? "text" : "password"}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                    placeholder="••••••••"
+                                    className="pl-10 pr-10 bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                />
+                                <Lock size={18} className="absolute left-3 top-3 text-gray-500" />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-3 text-gray-500 hover:text-white transition-colors"
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-between text-sm">
+                            <label className="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-gray-300">
+                                <input type="checkbox" className="rounded border-gray-600 bg-gray-900 text-primary-600 focus:ring-primary-500" />
+                                Remember me
+                            </label>
+                            <a href="#" className="text-primary-400 hover:underline">Forgot password?</a>
+                        </div>
+
+                        <Button type="submit" className="w-full py-3 text-lg shadow-lg shadow-primary-900/20" isLoading={loading}>
+                            {t('login')} <ArrowRight size={18} className="ml-2 inline" />
+                        </Button>
+                    </form>
+
+                    <div className="mt-8 text-center">
+                        <p className="text-gray-400 text-sm">
+                            Don't have an account?{' '}
+                            <Link to="/register" className="text-primary-400 font-medium hover:text-primary-300 transition-colors">
+                                {t('register')}
+                            </Link>
+                        </p>
                     </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <Input
-                        label={t('email')}
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <Input
-                        label={t('password')}
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <Button type="submit" className="w-full" isLoading={loading}>
-                        {t('login')}
-                    </Button>
-                </form>
-
-                <p className="mt-4 text-center text-sm text-gray-600">
-                    Don't have an account?{' '}
-                    <Link to="/register" className="text-primary-600 hover:underline">
-                        {t('register')}
-                    </Link>
-                </p>
-            </Card>
+                </div>
+            </div>
         </div>
     );
 };

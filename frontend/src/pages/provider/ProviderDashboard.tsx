@@ -1,75 +1,194 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { Card } from '../../components/ui/Card';
-import { DollarSign, Calendar, Star, TrendingUp } from 'lucide-react';
+import { Loader } from '../../components/ui/Loader';
+import api from '../../utils/api';
+import { useNavigate } from 'react-router-dom';
+import { DollarSign, Calendar, Star, TrendingUp, AlertTriangle, Clock, ChevronRight, Briefcase, CheckCircle } from 'lucide-react';
+
+interface Booking {
+    _id: string;
+    scheduledDate: string;
+    status: string;
+    service: {
+        name: string;
+        price: number;
+    };
+    customer: {
+        name: string;
+    };
+}
 
 const ProviderDashboard = () => {
     const { user } = useContext(AuthContext)!;
+    const navigate = useNavigate();
+    const [stats, setStats] = useState({
+        earnings: 0,
+        activeBookings: 0,
+        completedJobs: 0,
+        rating: 4.8
+    });
+    const [loading, setLoading] = useState(true);
 
-    // TODO: Fetch real stats from API
-    const stats = [
-        { label: 'Total Earnings', value: 'PKR 45,000', icon: DollarSign, color: 'bg-green-100 text-green-600' },
-        { label: 'Active Bookings', value: '12', icon: Calendar, color: 'bg-blue-100 text-blue-600' },
-        { label: 'Rating', value: '4.8', icon: Star, color: 'bg-yellow-100 text-yellow-600' },
-        { label: 'Completed Jobs', value: '156', icon: TrendingUp, color: 'bg-purple-100 text-purple-600' },
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const { data: bookings } = await api.get('/bookings');
+
+                const earnings = bookings
+                    .filter((b: Booking) => b.status === 'completed')
+                    .reduce((sum: number, b: Booking) => sum + (b.service?.price || 0), 0);
+
+                const activeBookings = bookings.filter((b: Booking) =>
+                    ['pending', 'accepted'].includes(b.status)
+                ).length;
+
+                const completedJobs = bookings.filter((b: Booking) => b.status === 'completed').length;
+
+                setStats({
+                    earnings,
+                    activeBookings,
+                    completedJobs,
+                    rating: 4.8
+                });
+
+            } catch (error) {
+                console.error("Failed to fetch dashboard data", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    if (loading) return <Loader />;
+
+    const dashboardCards = [
+        {
+            title: 'Total Earnings',
+            value: `PKR ${stats.earnings.toLocaleString()}`,
+            description: 'View your financial summary',
+            icon: DollarSign,
+            path: '/provider/earnings'
+        },
+        {
+            title: 'Active Bookings',
+            value: stats.activeBookings.toString(),
+            description: 'Manage current jobs',
+            icon: Calendar,
+            path: '/provider/bookings'
+        },
+        {
+            title: 'My Services',
+            value: 'Manage',
+            description: 'Update your service listings',
+            icon: Briefcase,
+            path: '/provider/services'
+        },
+        {
+            title: 'Performance',
+            value: `${stats.rating} ⭐`,
+            description: 'View ratings & reviews',
+            icon: Star,
+            path: '#'
+        },
     ];
 
     return (
-        <div className="p-8">
-            <header className="mb-8">
-                <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-                <p className="text-gray-500">Welcome back, {user?.name}</p>
+        <div className="space-y-10">
+            {/* Header */}
+            <header className="text-center md:text-left">
+                <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-2">
+                    Welcome, <span className="text-primary-400">{user?.name}</span>
+                </h1>
+                <p className="text-gray-400">Manage your business, bookings, and earnings from one place.</p>
 
-                {user?.isSuspended && (
-                    <div className="bg-red-50 border-l-4 border-red-500 p-4 mt-4">
-                        <div className="flex">
-                            <div className="ml-3">
-                                <p className="text-sm text-red-700">
-                                    <span className="font-bold">Account Suspended:</span> Your interactions are currently restricted. Please contact support.
-                                </p>
-                            </div>
+                {/* Status Pills */}
+                <div className="flex flex-wrap gap-4 mt-6 justify-center md:justify-start">
+                    {user?.isSuspended && (
+                        <div className="px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-full flex items-center gap-2 text-red-400">
+                            <AlertTriangle size={16} />
+                            <span className="text-sm font-bold">Account Suspended</span>
                         </div>
-                    </div>
-                )}
-
-                {user?.role === 'provider' && !user?.isVerified && !user?.isSuspended && (
-                    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
-                        <div className="flex">
-                            <div className="ml-3">
-                                <p className="text-sm text-yellow-700">
-                                    <span className="font-bold">Pending Verification:</span> You cannot create new services until an admin approves your account.
-                                </p>
-                            </div>
+                    )}
+                    {!user?.isVerified && !user?.isSuspended && (
+                        <div className="px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-full flex items-center gap-2 text-yellow-400">
+                            <Clock size={16} />
+                            <span className="text-sm font-bold">Verification Pending</span>
                         </div>
-                    </div>
-                )}
+                    )}
+                    {user?.isVerified && !user?.isSuspended && (
+                        <div className="px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-full flex items-center gap-2 text-green-400">
+                            <CheckCircle size={16} />
+                            <span className="text-sm font-bold">Verified Provider</span>
+                        </div>
+                    )}
+                </div>
             </header>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                {stats.map((stat, index) => {
-                    const Icon = stat.icon;
+            {/* Main Action Grid - The styling requested by user */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {dashboardCards.map((card, index) => {
+                    const Icon = card.icon;
                     return (
-                        <Card key={index} className="p-6 flex items-center gap-4">
-                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${stat.color}`}>
-                                <Icon size={24} />
+                        <div
+                            key={index}
+                            onClick={() => navigate(card.path)}
+                            className="
+                                group cursor-pointer
+                                bg-gray-800 border border-gray-700 rounded-2xl p-8
+                                flex flex-col items-center text-center
+                                hover:border-primary-500/50 hover:shadow-2xl hover:shadow-primary-900/10 hover:-translate-y-1
+                                transition-all duration-300
+                            "
+                        >
+                            <div className="
+                                w-16 h-16 mb-6 rounded-full 
+                                bg-gray-900 border border-gray-700 
+                                flex items-center justify-center 
+                                text-primary-400 group-hover:text-primary-300 group-hover:border-primary-500/30 group-hover:scale-110
+                                transition-all duration-300
+                            ">
+                                <Icon size={28} strokeWidth={1.5} />
                             </div>
-                            <div>
-                                <p className="text-sm text-gray-500 font-medium">{stat.label}</p>
-                                <h3 className="text-xl font-bold text-gray-900">{stat.value}</h3>
+
+                            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary-200 transition-colors">
+                                {card.title}
+                            </h3>
+
+                            <div className="text-3xl font-extrabold text-white mb-3 tracking-tight">
+                                {card.value}
                             </div>
-                        </Card>
+
+                            <p className="text-sm text-gray-500 font-medium group-hover:text-gray-400 transition-colors">
+                                {card.description}
+                            </p>
+                        </div>
                     );
                 })}
             </div>
 
-            {/* Recent Activity (Placeholder) */}
-            <Card className="p-6">
-                <h2 className="text-lg font-bold mb-4">Recent Bookings</h2>
-                <div className="text-center py-8 text-gray-500">
-                    No recent activity to show.
+            {/* Quick Stats Row (Optional, kept minimal) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <div onClick={() => navigate('/provider/bookings')} className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 flex items-center justify-between cursor-pointer hover:bg-gray-800 transition-colors group">
+                    <div>
+                        <h4 className="text-gray-400 font-medium mb-1">Response Rate</h4>
+                        <p className="text-2xl font-bold text-white">100%</p>
+                    </div>
+                    <div className="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform">
+                        <TrendingUp size={20} />
+                    </div>
                 </div>
-            </Card>
+
+                <div onClick={() => navigate('/provider/bookings?filter=completed')} className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 flex items-center justify-between cursor-pointer hover:bg-gray-800 transition-colors group">
+                    <div>
+                        <h4 className="text-gray-400 font-medium mb-1">Jobs Completed</h4>
+                        <p className="text-2xl font-bold text-white">{stats.completedJobs}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                        <CheckCircle size={20} />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

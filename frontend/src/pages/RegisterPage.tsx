@@ -3,9 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Card } from '../components/ui/Card';
 import { useLanguage } from '../context/LanguageContext';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, User, Mail, Phone, MapPin, Briefcase, Lock, Check } from 'lucide-react';
 
 const RegisterPage = () => {
     const { t } = useLanguage();
@@ -17,7 +16,7 @@ const RegisterPage = () => {
         city: '',
         password: '',
         confirmPassword: '',
-        role: '',
+        role: 'customer', // Default to customer
     });
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -27,17 +26,21 @@ const RegisterPage = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handleRoleSelect = (role: string) => {
+        setFormData({ ...formData, role });
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
 
-        if (formData.role === 'admin') {
-            alert("Admin registration is restricted. Please contact support to request administrative access.");
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match');
             return;
         }
 
-        if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
+        if (formData.password.length < 6) {
+            setError('Password must be at least 6 characters');
             return;
         }
 
@@ -51,7 +54,6 @@ const RegisterPage = () => {
                 password: formData.password,
                 role: formData.role,
             });
-            // On success, redirect to login
             navigate('/login');
         } catch (err: any) {
             setError(err.response?.data?.message || 'Registration failed');
@@ -61,108 +63,159 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-8">
-            <Card className="w-full max-w-lg p-8">
-                <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">{t('register')}</h2>
+        <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4 py-12">
+            <div className="w-full max-w-2xl bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-xl">
+                <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold text-white mb-2">{t('register')}</h2>
+                    <p className="text-gray-400">Join us today! Create your account.</p>
+                </div>
 
                 {error && (
-                    <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4 text-sm">
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl mb-6 text-sm">
                         {error}
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <Input
-                        label={t('name')}
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        placeholder="John Doe"
-                    />
-
-                    <Input
-                        label={t('email')}
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="user@example.com"
-                    />
-
-                    <Input
-                        label={t('phone')}
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="0300-1234567"
-                    />
-
-                    <Input
-                        label={t('city') || 'City'}
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        required
-                        placeholder="Lahore"
-                    />
-
-                    <div className="flex flex-col gap-2">
-                        <label className="text-sm font-medium text-gray-700">{t('role') || 'I am a'}</label>
-                        <select
-                            name="role"
-                            value={formData.role}
-                            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:outline-none bg-white"
-                            required
-                        >
-                            <option value="" disabled>Select Role</option>
-                            <option value="customer">Customer</option>
-                            <option value="provider">Service Provider</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-
-                    <div className="relative">
-                        <Input
-                            label={t('password')}
-                            type={showPassword ? "text" : "password"}
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                        />
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Role Selection */}
+                    <div className="grid grid-cols-2 gap-4 mb-8">
                         <button
                             type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-[34px] text-gray-500 hover:text-gray-700"
+                            onClick={() => handleRoleSelect('customer')}
+                            className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${formData.role === 'customer'
+                                    ? 'border-primary-500 bg-primary-900/20 text-white'
+                                    : 'border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600'
+                                }`}
                         >
-                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            <User size={32} className={formData.role === 'customer' ? 'text-primary-500' : 'text-gray-500'} />
+                            <span className="font-bold">Customer</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => handleRoleSelect('provider')}
+                            className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${formData.role === 'provider'
+                                    ? 'border-primary-500 bg-primary-900/20 text-white'
+                                    : 'border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600'
+                                }`}
+                        >
+                            <Briefcase size={32} className={formData.role === 'provider' ? 'text-primary-500' : 'text-gray-500'} />
+                            <span className="font-bold">Service Provider</span>
                         </button>
                     </div>
 
-                    <Input
-                        label="Confirm Password"
-                        type="password"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        required
-                    />
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300 ml-1">{t('name')}</label>
+                            <div className="relative">
+                                <Input
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="John Doe"
+                                    className="pl-10 bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                />
+                                <User size={18} className="absolute left-3 top-3 text-gray-500" />
+                            </div>
+                        </div>
 
-                    <Button type="submit" className="w-full" isLoading={loading}>
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300 ml-1">{t('email')}</label>
+                            <div className="relative">
+                                <Input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="user@example.com"
+                                    className="pl-10 bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                />
+                                <Mail size={18} className="absolute left-3 top-3 text-gray-500" />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300 ml-1">{t('phone')}</label>
+                            <div className="relative">
+                                <Input
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    placeholder="0300-1234567"
+                                    className="pl-10 bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                />
+                                <Phone size={18} className="absolute left-3 top-3 text-gray-500" />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300 ml-1">{t('city') || 'City'}</label>
+                            <div className="relative">
+                                <Input
+                                    name="city"
+                                    value={formData.city}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="Lahore"
+                                    className="pl-10 bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                />
+                                <MapPin size={18} className="absolute left-3 top-3 text-gray-500" />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300 ml-1">{t('password')}</label>
+                            <div className="relative">
+                                <Input
+                                    type={showPassword ? "text" : "password"}
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="Create a password"
+                                    className="pl-10 pr-10 bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                />
+                                <Lock size={18} className="absolute left-3 top-3 text-gray-500" />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-3 text-gray-500 hover:text-white"
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300 ml-1">Confirm Password</label>
+                            <div className="relative">
+                                <Input
+                                    type="password"
+                                    name="confirmPassword"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="Confirm your password"
+                                    className="pl-10 bg-gray-900 border-gray-700 text-white focus:border-primary-500"
+                                />
+                                <Check size={18} className="absolute left-3 top-3 text-gray-500" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <Button type="submit" className="w-full py-4 text-lg shadow-lg shadow-primary-900/20" isLoading={loading}>
                         {t('register')}
                     </Button>
                 </form>
 
-                <p className="mt-4 text-center text-sm text-gray-600">
+                <p className="mt-8 text-center text-sm text-gray-400">
                     Already have an account?{' '}
-                    <Link to="/login" className="text-primary-600 hover:underline">
+                    <Link to="/login" className="text-primary-400 font-medium hover:text-primary-300 transition-colors">
                         {t('login')}
                     </Link>
                 </p>
-            </Card>
+            </div>
         </div>
     );
 };
