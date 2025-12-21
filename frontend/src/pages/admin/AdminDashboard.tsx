@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import { Loader } from '../../components/ui/Loader';
 import { Users, Briefcase, UserCheck, Shield, ChevronRight, Activity } from 'lucide-react';
-import NotificationBell from '../../components/ui/NotificationBell';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -58,7 +57,6 @@ const AdminDashboard = () => {
                     <h1 className="text-2xl font-bold text-white">Platform Overview</h1>
                     <p className="text-gray-400 mt-1">Summary of system performance and metrics.</p>
                 </div>
-                <NotificationBell />
             </div>
 
             {/* Stats Grid */}

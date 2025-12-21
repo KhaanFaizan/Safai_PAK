@@ -78,6 +78,22 @@ const MyBookings = () => {
         }
     };
 
+    const handleCancelBooking = async (bookingId: string) => {
+        if (!window.confirm('Are you sure you want to cancel this booking?')) return;
+
+        try {
+            await api.put(`/bookings/${bookingId}/status`, { status: 'cancelled' });
+
+            // Update state to reflect change
+            setBookings(prev => prev.map(b =>
+                b._id === bookingId ? { ...b, status: 'cancelled' } : b
+            ));
+        } catch (error) {
+            console.error('Failed to cancel booking', error);
+            alert('Failed to cancel booking');
+        }
+    };
+
     if (loading) return (
         <div className="min-h-screen bg-gray-900 flex items-center justify-center">
             <Loader />
@@ -85,7 +101,7 @@ const MyBookings = () => {
     );
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white">
+        <div className="min-h-screen bg-gray-900 text-white overflow-x-hidden">
             <div className="max-w-[1440px] mx-auto px-4 py-8">
                 <BackButton className="mb-6 text-gray-400 hover:text-white" />
 
@@ -161,11 +177,14 @@ const MyBookings = () => {
                             const StatusIcon = styles.icon;
 
                             return (
-                                <div key={booking._id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-primary-500/50 transition-all shadow-lg group">
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                <div
+                                    key={booking._id}
+                                    className="bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-700 hover:border-primary-500/50 transition-all group"
+                                >
+                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
 
                                         {/* Left: Date & Info */}
-                                        <div className="flex-1 flex gap-6">
+                                        <div className="flex-1 flex gap-4 md:gap-6">
                                             {/* Date Badge */}
                                             <div className="hidden md:flex flex-col items-center justify-center bg-gray-900 border border-gray-700 rounded-xl w-20 h-20 text-center shrink-0">
                                                 <span className="text-xs text-gray-400 uppercase font-bold">
@@ -179,30 +198,30 @@ const MyBookings = () => {
                                                 </span>
                                             </div>
 
-                                            <div className="flex-1">
-                                                <div className="flex flex-wrap items-center gap-3 mb-2">
-                                                    <span className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${styles.bg} ${styles.text} ${styles.border}`}>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-2">
+                                                    <span className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider border ${styles.bg} ${styles.text} ${styles.border}`}>
                                                         <StatusIcon size={12} /> {booking.status}
                                                     </span>
-                                                    <span className="md:hidden text-gray-400 text-sm flex items-center gap-1">
+                                                    <span className="md:hidden text-gray-400 text-xs flex items-center gap-1">
                                                         <Calendar size={14} />
                                                         {new Date(booking.scheduledDate).toLocaleDateString()}
                                                     </span>
                                                 </div>
 
-                                                <h3 className="text-xl font-bold text-white group-hover:text-primary-500 transition-colors mb-2">
+                                                <h3 className="text-lg md:text-xl font-bold text-white group-hover:text-primary-500 transition-colors mb-2 break-words">
                                                     {booking.service?.name}
                                                 </h3>
 
-                                                <div className="flex flex-col sm:flex-row gap-x-6 gap-y-2 text-sm text-gray-400">
+                                                <div className="flex flex-col sm:flex-row gap-x-6 gap-y-1 text-sm text-gray-400">
                                                     <div className="flex items-center gap-2">
-                                                        <DollarSign size={16} className="text-gray-500" />
+                                                        <DollarSign size={14} className="text-gray-500 shrink-0" />
                                                         <span className="font-medium text-gray-300">PKR {booking.service?.price}</span>
                                                     </div>
                                                     {booking.address && (
-                                                        <div className="flex items-center gap-2">
-                                                            <MapPin size={16} className="text-gray-500" />
-                                                            <span className="truncate max-w-md">{booking.address}</span>
+                                                        <div className="flex items-center gap-2 min-w-0">
+                                                            <MapPin size={14} className="text-gray-500 shrink-0" />
+                                                            <span className="break-words">{booking.address}</span>
                                                         </div>
                                                     )}
                                                 </div>
@@ -210,15 +229,19 @@ const MyBookings = () => {
                                         </div>
 
                                         {/* Right: Actions */}
-                                        <div className="flex items-center gap-3 border-t md:border-t-0 pt-4 md:pt-0 border-gray-700">
+                                        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 border-t md:border-t-0 pt-4 md:pt-0 border-gray-700 w-full md:w-auto mt-4 md:mt-0">
                                             {booking.status === 'pending' && (
-                                                <Button variant="danger" className="text-sm py-2 px-4 bg-red-900/20 text-red-400 border border-red-900 hover:bg-red-900/40">
+                                                <Button
+                                                    variant="danger"
+                                                    className="text-sm py-2 px-4 bg-red-900/20 text-red-400 border border-red-900 hover:bg-red-900/40 w-full md:w-auto whitespace-nowrap"
+                                                    onClick={() => handleCancelBooking(booking._id)}
+                                                >
                                                     Cancel
                                                 </Button>
                                             )}
                                             <Button
                                                 variant="outline"
-                                                className="text-sm py-2 px-4 border-gray-600 text-gray-300 hover:text-white hover:border-gray-500 hover:bg-gray-700"
+                                                className="text-sm py-2 px-4 border-gray-600 text-gray-300 hover:text-white hover:border-gray-500 hover:bg-gray-700 w-full md:w-auto justify-center whitespace-nowrap"
                                                 onClick={() => navigate(`/services/${booking.service?._id}`)}
                                             >
                                                 View Service

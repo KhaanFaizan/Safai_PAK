@@ -95,35 +95,38 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
         }
 
         // Notify Customer based on Provider action
-        let title, message;
+        let title, message, notificationType;
         if (status === 'accepted') {
             title = 'Booking Accepted';
             message = `✅ Good news! Your booking has been accepted by provider.`;
+            notificationType = 'booking_accept';
         } else if (status === 'completed') {
             title = 'Service Completed';
             message = `🌟 Service completed! Please rate your experience.`;
+            notificationType = 'booking_complete';
 
             // Notify Admin specifically for completion
-            await booking.populate('customer', 'name');
+            const customer = await User.findById(booking.customer);
             const admins = await User.find({ role: 'admin' });
             for (const admin of admins) {
                 await notify(
                     admin._id,
                     'system',
                     'Service Completed',
-                    `Provider ${req.user.name} completed service with Customer ${booking.customer.name}.`,
+                    `Provider ${req.user.name} completed service with Customer ${customer ? customer.name : 'Unknown'}.`,
                     booking._id
                 );
             }
         } else if (status === 'cancelled') {
             title = 'Booking Cancelled';
             message = `❌ Your booking was cancelled by the provider.`;
+            notificationType = 'booking_cancel';
         }
 
-        if (title) {
+        if (title && notificationType) {
             await notify(
-                booking.customer._id || booking.customer,
-                `booking_${status}`,
+                booking.customer,
+                notificationType,
                 title,
                 message,
                 booking._id,
