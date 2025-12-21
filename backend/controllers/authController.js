@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
+const notify = require('../utils/notify');
 
 // @desc    Register new user
 // @route   POST /api/auth/register
@@ -32,6 +33,23 @@ const registerUser = asyncHandler(async (req, res) => {
         role: role || 'customer',
         isVerified: false, // Pending admin approval
     });
+
+    // Notify Admins for ALL new registrations
+    const admins = await User.find({ role: 'admin' });
+    const notificationTitle = role === 'provider' ? 'New Provider Registration' : 'New Customer Registration';
+    const notificationMessage = role === 'provider'
+        ? `New provider ${name} has registered and is pending verification.`
+        : `New customer ${name} has joined the platform.`;
+
+    for (const admin of admins) {
+        await notify(
+            admin._id,
+            'system',
+            notificationTitle,
+            notificationMessage,
+            user._id
+        );
+    }
 
     if (user) {
         res.status(201).json({

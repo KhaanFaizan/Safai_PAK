@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
+const notify = require('../utils/notify');
 
 // @desc    Get all unverified providers
 // @route   GET /api/admin/providers/unverified
@@ -20,6 +21,15 @@ const verifyProvider = asyncHandler(async (req, res) => {
     if (user && user.role === 'provider') {
         user.isVerified = true;
         const updatedUser = await user.save();
+
+        // Notify Provider
+        await notify(
+            updatedUser._id,
+            'verification',
+            'Account Verified',
+            '🎉 Your provider account has been verified! You can now start accepting bookings.'
+        );
+
         res.status(200).json({
             _id: updatedUser._id,
             name: updatedUser.name,

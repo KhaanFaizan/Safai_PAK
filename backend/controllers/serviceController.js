@@ -1,5 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Service = require('../models/serviceModel');
+const User = require('../models/userModel');
+const notify = require('../utils/notify');
 
 // @desc    Get all services
 // @route   GET /api/services
@@ -98,6 +100,18 @@ const createService = asyncHandler(async (req, res) => {
         category,
     });
 
+    // Notify Admins
+    const admins = await User.find({ role: 'admin' });
+    for (const admin of admins) {
+        await notify(
+            admin._id,
+            'system',
+            'New Service Created',
+            `Provider ${req.user.name} has created a new service: ${name}`,
+            service._id
+        );
+    }
+
     res.status(201).json(service);
 });
 
@@ -131,6 +145,18 @@ const updateService = asyncHandler(async (req, res) => {
             new: true,
         }
     );
+
+    // Notify Admins
+    const admins = await User.find({ role: 'admin' });
+    for (const admin of admins) {
+        await notify(
+            admin._id,
+            'system',
+            'Service Updated',
+            `Provider ${req.user.name} has updated the service: ${updatedService.name}`,
+            updatedService._id
+        );
+    }
 
     res.json(updatedService);
 });

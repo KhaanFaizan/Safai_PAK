@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const Booking = require('../models/bookingModel');
 const Service = require('../models/serviceModel');
+const User = require('../models/userModel');
+const notify = require('../utils/notify');
 
 // @desc    Create new booking
 // @route   POST /api/bookings
@@ -27,6 +29,16 @@ const createBooking = asyncHandler(async (req, res) => {
         scheduledDate,
         address,
     });
+
+    // Notify Provider
+    await notify(
+        service.user,
+        'booking_create',
+        'New Booking Request',
+        `📅 New booking from ${req.user.name} for ${service.name}.`,
+        booking._id,
+        req.user.id
+    );
 
     res.status(201).json(booking);
 });
@@ -81,6 +93,43 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
             res.status(400);
             throw new Error('Invalid status update for provider');
         }
+
+        // Notify Customer based on Provider action
+        let title, message;
+        if (status === 'accepted') {
+            title = 'Booking Accepted';
+            message = `✅ Good news! Your booking has been accepted by provider.`;
+        } else if (status === 'completed') {
+            title = 'Service Completed';
+            message = `🌟 Service completed! Please rate your experience.`;
+
+            // Notify Admin specifically for completion
+            await booking.populate('customer', 'name');
+            const admins = await User.find({ role: 'admin' });
+            for (const admin of admins) {
+                await notify(
+                    admin._id,
+                    'system',
+                    'Service Completed',
+                    `Provider ${req.user.name} completed service with Customer ${booking.customer.name}.`,
+                    booking._id
+                );
+            }
+        } else if (status === 'cancelled') {
+            title = 'Booking Cancelled';
+            message = `❌ Your booking was cancelled by the provider.`;
+        }
+
+        if (title) {
+            await notify(
+                booking.customer._id || booking.customer,
+                `booking_${status}`,
+                title,
+                message,
+                booking._id,
+                req.user.id
+            );
+        }
     }
     // Customer Logic
     else if (req.user.role === 'customer') {
@@ -95,7 +144,20 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
             res.status(400);
             throw new Error('Customer can only cancel pending bookings');
         }
-    } else {
+
+        // Notify Provider of Cancellation
+        if (status === 'cancelled') {
+            await notify(
+                booking.provider,
+                'booking_cancel',
+                'Booking Cancelled',
+                `❌ Customer ${req.user.name} cancelled their booking.`,
+                booking._id,
+                req.user.id
+            );
+        }
+    }
+    else {
         res.status(403);
         throw new Error('Not authorized');
     }

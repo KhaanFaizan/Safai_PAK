@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 const Service = require('../models/serviceModel');
+const notify = require('../utils/notify');
 
 // @desc    Get provider profile and services
 // @route   GET /api/users/providers/:id
@@ -40,6 +41,24 @@ const verifyProvider = asyncHandler(async (req, res) => {
     if (user) {
         user.isVerified = req.body.isVerified;
         const updatedUser = await user.save();
+
+        // Send Notification
+        if (updatedUser.isVerified) {
+            await notify(
+                updatedUser._id,
+                'verification',
+                'Account Verified',
+                '🎉 Your provider account has been verified! You can now start accepting bookings.'
+            );
+        } else {
+            await notify(
+                updatedUser._id,
+                'system',
+                'Verification Revoked',
+                '⚠️ Your provider verification has been revoked. Please contact support for more details.'
+            );
+        }
+
         res.json({
             _id: updatedUser._id,
             name: updatedUser.name,
@@ -62,6 +81,24 @@ const suspendUser = asyncHandler(async (req, res) => {
     if (user) {
         user.isSuspended = !user.isSuspended;
         const updatedUser = await user.save();
+
+        // Send Notification
+        if (updatedUser.isSuspended) {
+            await notify(
+                updatedUser._id,
+                'system',
+                'Account Suspended',
+                '⛔ Your account has been suspended due to policy violations or admin action.'
+            );
+        } else {
+            await notify(
+                updatedUser._id,
+                'system',
+                'Account Reactivated',
+                '✅ Your account has been reactivated. You can now access all features.'
+            );
+        }
+
         res.json({
             _id: updatedUser._id,
             name: updatedUser.name,

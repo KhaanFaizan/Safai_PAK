@@ -11,8 +11,11 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
-
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+if (!process.env.JWT_SECRET) {
+    console.error('CRITICAL ERROR: JWT_SECRET is NOT defined. Authentication WILL FAIL.');
+}
 
 // Connect to Database
 connectDB();
@@ -30,6 +33,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
