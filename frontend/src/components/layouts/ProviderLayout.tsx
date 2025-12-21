@@ -24,9 +24,9 @@ const ProviderLayout = () => {
     ];
 
     return (
-        <div className="flex h-screen bg-gray-900 font-sans">
+        <div className="flex min-h-screen bg-gray-900 font-sans">
             {/* Sidebar */}
-            <aside className="w-64 bg-gray-800 border-r border-gray-700 flex-shrink-0 hidden md:flex md:flex-col">
+            <aside className="w-64 bg-gray-800 border-r border-gray-700 flex-shrink-0 hidden md:flex md:flex-col sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
                 <div className="p-6 border-b border-gray-700 flex items-center gap-2">
                     <LayoutDashboard className="text-primary-500" size={28} />
                     <h2 className="text-2xl font-bold text-white">Provider Panel</h2>
@@ -74,10 +74,8 @@ const ProviderLayout = () => {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-auto">
-                <div className="p-8 max-w-7xl mx-auto">
-                    <Outlet />
-                </div>
+            <main className="flex-1 p-8 max-w-7xl mx-auto">
+                <Outlet />
             </main>
         </div>
     );

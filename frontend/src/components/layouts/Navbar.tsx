@@ -47,9 +47,13 @@ const Navbar = () => {
                     </div>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden md:flex items-center space-x-6">
-                        <NavLink to="/services">{t('services')}</NavLink>
-                        <NavLink to="/how-it-works">How it Works</NavLink>
+                    <nav className="hidden md:flex flex-1 justify-center items-center space-x-8">
+                        {user?.role !== 'provider' && (
+                            <>
+                                <NavLink to="/services">{t('services')}</NavLink>
+                                <NavLink to="/how-it-works">How it Works</NavLink>
+                            </>
+                        )}
 
                         {/* Conditional Links based on Role */}
                         {user?.role === 'customer' && (
@@ -67,10 +71,14 @@ const Navbar = () => {
                             <NavLink to="/admin/dashboard">Admin Panel</NavLink>
                         )}
 
-                        {!user && (
-                            <NavLink to="/contact">Contact Us</NavLink>
+                        {user?.role !== 'provider' && (
+                            <>
+                                {!user && (
+                                    <NavLink to="/contact">Contact Us</NavLink>
+                                )}
+                                <NavLink to="/about">About</NavLink>
+                            </>
                         )}
-                        <NavLink to="/about">About</NavLink>
                     </nav>
 
                     {/* Right Actions (Desktop) */}
@@ -148,8 +156,12 @@ const Navbar = () => {
                         )}
 
                         <div className="space-y-1">
-                            <Link to="/services" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">{t('services')}</Link>
-                            <Link to="/how-it-works" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">How it Works</Link>
+                            {user?.role !== 'provider' && (
+                                <>
+                                    <Link to="/services" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">{t('services')}</Link>
+                                    <Link to="/how-it-works" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">How it Works</Link>
+                                </>
+                            )}
 
                             {user?.role === 'customer' && (
                                 <Link to="/bookings" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">{t('myBookings')}</Link>
@@ -166,10 +178,14 @@ const Navbar = () => {
                                 <Link to="/admin/dashboard" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">Admin Panel</Link>
                             )}
 
-                            {!user && (
-                                <Link to="/contact" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">Contact Us</Link>
+                            {user?.role !== 'provider' && (
+                                <>
+                                    {!user && (
+                                        <Link to="/contact" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">Contact Us</Link>
+                                    )}
+                                    <Link to="/about" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">About</Link>
+                                </>
                             )}
-                            <Link to="/about" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">About</Link>
                         </div>
 
                         <div className="pt-4 border-t border-gray-800 mt-4">
