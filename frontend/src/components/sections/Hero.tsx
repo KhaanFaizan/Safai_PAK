@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/Button';
-import { useLanguage } from '../../context/LanguageContext';
+
 import { ShieldCheck, Clock, Star } from 'lucide-react';
 
 const Hero = () => {
-    const { t } = useLanguage();
+
     const navigate = useNavigate();
 
     return (

@@ -4,7 +4,7 @@ import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { BackButton } from '../components/common/BackButton';
 import { Input } from '../components/ui/Input';
-import { useLanguage } from '../context/LanguageContext';
+
 import { Loader } from '../components/ui/Loader';
 import { Calendar, Clock, MapPin, Phone, FileText, AlertCircle, Info } from 'lucide-react';
 
@@ -35,7 +35,7 @@ interface ServiceDetails {
 
 const BookingPage = () => {
     const { serviceId } = useParams();
-    const { t } = useLanguage();
+
     const navigate = useNavigate();
 
     // Data States

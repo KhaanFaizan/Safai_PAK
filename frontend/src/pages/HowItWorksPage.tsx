@@ -1,11 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
-import { useLanguage } from '../context/LanguageContext';
 import { UserPlus, Search, Calendar, Star, Briefcase, ShieldCheck, List, TrendingUp, CheckCircle, Lock, Globe, MessageSquare } from 'lucide-react';
 import { BackButton } from '../components/common/BackButton';
 
 const HowItWorksPage = () => {
-    const { t } = useLanguage();
+
     const navigate = useNavigate();
 
     return (

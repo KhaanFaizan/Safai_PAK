@@ -1,14 +1,13 @@
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { useLanguage } from '../context/LanguageContext';
 import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 
 const LoginPage = () => {
-    const { t } = useLanguage();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +43,7 @@ const LoginPage = () => {
             <div className="w-full max-w-md">
                 {/* Header Logo/Text */}
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-white mb-2">{t('login')}</h1>
+                    <h1 className="text-3xl font-bold text-white mb-2">Login</h1>
                     <p className="text-gray-400">Welcome back! Please enter your details.</p>
                 </div>
 
@@ -57,7 +56,7 @@ const LoginPage = () => {
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300 ml-1">{t('email')}</label>
+                            <label className="text-sm font-medium text-gray-300 ml-1">Email</label>
                             <div className="relative">
                                 <Input
                                     type="email"
@@ -72,7 +71,7 @@ const LoginPage = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300 ml-1">{t('password')}</label>
+                            <label className="text-sm font-medium text-gray-300 ml-1">Password</label>
                             <div className="relative">
                                 <Input
                                     type={showPassword ? "text" : "password"}
@@ -102,7 +101,7 @@ const LoginPage = () => {
                         </div>
 
                         <Button type="submit" className="w-full py-3 text-lg shadow-lg shadow-primary-900/20" isLoading={loading}>
-                            {t('login')} <ArrowRight size={18} className="ml-2 inline" />
+                            Login <ArrowRight size={18} className="ml-2 inline" />
                         </Button>
                     </form>
 
@@ -110,7 +109,7 @@ const LoginPage = () => {
                         <p className="text-gray-400 text-sm">
                             Don't have an account?{' '}
                             <Link to="/register" className="text-primary-400 font-medium hover:text-primary-300 transition-colors">
-                                {t('register')}
+                                Register
                             </Link>
                         </p>
                     </div>

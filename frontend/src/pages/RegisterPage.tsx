@@ -3,11 +3,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { useLanguage } from '../context/LanguageContext';
 import { Eye, EyeOff, User, Mail, Phone, MapPin, Briefcase, Lock, Check } from 'lucide-react';
 
 const RegisterPage = () => {
-    const { t } = useLanguage();
+
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -66,7 +65,7 @@ const RegisterPage = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4 py-12">
             <div className="w-full max-w-2xl bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-xl">
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-white mb-2">{t('register')}</h2>
+                    <h2 className="text-3xl font-bold text-white mb-2">Register</h2>
                     <p className="text-gray-400">Join us today! Create your account.</p>
                 </div>
 
@@ -83,8 +82,8 @@ const RegisterPage = () => {
                             type="button"
                             onClick={() => handleRoleSelect('customer')}
                             className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${formData.role === 'customer'
-                                    ? 'border-primary-500 bg-primary-900/20 text-white'
-                                    : 'border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600'
+                                ? 'border-primary-500 bg-primary-900/20 text-white'
+                                : 'border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600'
                                 }`}
                         >
                             <User size={32} className={formData.role === 'customer' ? 'text-primary-500' : 'text-gray-500'} />
@@ -94,8 +93,8 @@ const RegisterPage = () => {
                             type="button"
                             onClick={() => handleRoleSelect('provider')}
                             className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${formData.role === 'provider'
-                                    ? 'border-primary-500 bg-primary-900/20 text-white'
-                                    : 'border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600'
+                                ? 'border-primary-500 bg-primary-900/20 text-white'
+                                : 'border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600'
                                 }`}
                         >
                             <Briefcase size={32} className={formData.role === 'provider' ? 'text-primary-500' : 'text-gray-500'} />
@@ -105,7 +104,7 @@ const RegisterPage = () => {
 
                     <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300 ml-1">{t('name')}</label>
+                            <label className="text-sm font-medium text-gray-300 ml-1">Name</label>
                             <div className="relative">
                                 <Input
                                     name="name"
@@ -120,7 +119,7 @@ const RegisterPage = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300 ml-1">{t('email')}</label>
+                            <label className="text-sm font-medium text-gray-300 ml-1">Email</label>
                             <div className="relative">
                                 <Input
                                     type="email"
@@ -136,7 +135,7 @@ const RegisterPage = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300 ml-1">{t('phone')}</label>
+                            <label className="text-sm font-medium text-gray-300 ml-1">Phone</label>
                             <div className="relative">
                                 <Input
                                     name="phone"
@@ -150,7 +149,7 @@ const RegisterPage = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300 ml-1">{t('city') || 'City'}</label>
+                            <label className="text-sm font-medium text-gray-300 ml-1">City</label>
                             <div className="relative">
                                 <Input
                                     name="city"
@@ -165,7 +164,7 @@ const RegisterPage = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-300 ml-1">{t('password')}</label>
+                            <label className="text-sm font-medium text-gray-300 ml-1">Password</label>
                             <div className="relative">
                                 <Input
                                     type={showPassword ? "text" : "password"}
@@ -205,14 +204,14 @@ const RegisterPage = () => {
                     </div>
 
                     <Button type="submit" className="w-full py-4 text-lg shadow-lg shadow-primary-900/20" isLoading={loading}>
-                        {t('register')}
+                        Register
                     </Button>
                 </form>
 
                 <p className="mt-8 text-center text-sm text-gray-400">
                     Already have an account?{' '}
                     <Link to="/login" className="text-primary-400 font-medium hover:text-primary-300 transition-colors">
-                        {t('login')}
+                        Login
                     </Link>
                 </p>
             </div>

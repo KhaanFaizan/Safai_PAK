@@ -1,13 +1,13 @@
 import { useContext } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import { useLanguage } from '../../context/LanguageContext';
+
 import { LayoutDashboard, Briefcase, Calendar, DollarSign, LogOut } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 const ProviderLayout = () => {
     const { user, logout } = useContext(AuthContext)!;
-    const { t } = useLanguage();
+
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const ProviderLayout = () => {
             <aside className="w-64 bg-gray-800 border-r border-gray-700 flex-shrink-0 hidden md:flex md:flex-col sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
                 <div className="p-6 border-b border-gray-700 flex items-center gap-2">
                     <LayoutDashboard className="text-primary-500" size={28} />
-                    <h2 className="text-2xl font-bold text-white">Provider Panel</h2>
+                    <h2 className="text-3xl font-bold text-white">Provider Panel</h2>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2">
@@ -68,7 +68,7 @@ const ProviderLayout = () => {
                         onClick={handleLogout}
                     >
                         <LogOut size={18} className="mr-2" />
-                        {t('logout')}
+                        Logout
                     </Button>
                 </div>
             </aside>

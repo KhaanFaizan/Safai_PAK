@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../../utils/api';
 import { Button } from '../../components/ui/Button';
 import { Loader } from '../../components/ui/Loader';
+import { BackButton } from '../../components/ui/BackButton';
 import { CheckCircle, XCircle, Search, Filter, Shield, AlertTriangle } from 'lucide-react';
 import { Input } from '../../components/ui/Input';
 
@@ -67,6 +68,7 @@ const AdminProviders = () => {
 
     return (
         <div className="space-y-6">
+            <BackButton to="/admin/dashboard" className="text-gray-400 hover:text-white" />
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -96,8 +98,8 @@ const AdminProviders = () => {
                         key={f}
                         onClick={() => setFilter(f)}
                         className={`px-4 py-2 text-sm font-medium capitalize transition-all border-b-2 ${filter === f
-                                ? 'border-primary-500 text-primary-400'
-                                : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
+                            ? 'border-primary-500 text-primary-400'
+                            : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
                             }`}
                     >
                         {f}
@@ -112,8 +114,8 @@ const AdminProviders = () => {
                         <div
                             key={user._id}
                             className={`p-5 rounded-xl border transition-all ${user.isVerified
-                                    ? 'bg-gray-800 border-gray-700 hover:border-gray-600'
-                                    : 'bg-gray-800/80 border-primary-900/50 hover:border-primary-500/30'
+                                ? 'bg-gray-800 border-gray-700 hover:border-gray-600'
+                                : 'bg-gray-800/80 border-primary-900/50 hover:border-primary-500/30'
                                 }`}
                         >
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

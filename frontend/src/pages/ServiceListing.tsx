@@ -4,7 +4,6 @@ import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { Loader } from '../components/ui/Loader';
 import { BackButton } from '../components/common/BackButton';
-import { useLanguage } from '../context/LanguageContext';
 import { Search, DollarSign, Filter, SlidersHorizontal, Star } from 'lucide-react';
 
 // Images
@@ -31,7 +30,7 @@ interface Service {
 }
 
 const ServiceListing = () => {
-    const { t } = useLanguage();
+
     const navigate = useNavigate();
     const [services, setServices] = useState<Service[]>([]);
     const [loading, setLoading] = useState(true);
@@ -54,7 +53,7 @@ const ServiceListing = () => {
             const { data } = await api.get('/services');
             setServices(data.services || []);
         } catch (err) {
-            setError(t('error'));
+            setError('Failed to fetch services');
         } finally {
             setLoading(false);
         }
@@ -156,8 +155,8 @@ const ServiceListing = () => {
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
                             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === cat
-                                    ? 'bg-primary-600 text-white shadow-lg shadow-primary-900/50'
-                                    : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white border border-gray-700'
+                                ? 'bg-primary-600 text-white shadow-lg shadow-primary-900/50'
+                                : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white border border-gray-700'
                                 }`}
                         >
                             {cat}

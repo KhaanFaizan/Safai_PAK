@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useLanguage } from '../../context/LanguageContext';
+
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
 
 const Footer = () => {
-    const { t } = useLanguage();
+
     const { user } = useContext(AuthContext)!;
 
     return (

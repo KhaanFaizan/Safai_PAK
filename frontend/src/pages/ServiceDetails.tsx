@@ -4,7 +4,6 @@ import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { BackButton } from '../components/common/BackButton';
 import { Loader } from '../components/ui/Loader';
-import { useLanguage } from '../context/LanguageContext';
 import { CheckCircle, Clock, DollarSign, Star, Shield, ThumbsUp, Leaf } from 'lucide-react';
 
 // Images
@@ -39,7 +38,6 @@ interface ServiceDetail {
 
 const ServiceDetails = () => {
     const { id } = useParams();
-    const { t } = useLanguage();
     const navigate = useNavigate();
     const [service, setService] = useState<ServiceDetail | null>(null);
     const [loading, setLoading] = useState(true);
@@ -122,7 +120,7 @@ const ServiceDetails = () => {
                                 </span>
                             </div>
 
-                            <h3 className="text-xl font-bold mb-4">{t('description')}</h3>
+                            <h3 className="text-xl font-bold mb-4">Description</h3>
                             <p className="text-gray-400 leading-relaxed whitespace-pre-wrap mb-8 text-lg">
                                 {service.description}
                             </p>
@@ -200,7 +198,7 @@ const ServiceDetails = () => {
                                     className="w-full text-lg py-4 bg-primary-600 hover:bg-primary-500 text-white shadow-lg shadow-primary-900/20 mb-4"
                                     onClick={() => navigate(`/book/${service._id}`)}
                                 >
-                                    {t('bookNow')}
+                                    Book Now
                                 </Button>
                                 <p className="text-center text-xs text-gray-500">No payment required until completion</p>
                             </div>

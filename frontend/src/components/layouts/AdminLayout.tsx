@@ -19,7 +19,7 @@ const AdminLayout = () => {
             <aside className="w-64 bg-gray-800 border-r border-gray-700 flex-shrink-0 hidden md:flex md:flex-col sticky top-0 h-screen">
                 <div className="p-6 border-b border-gray-700 flex items-center gap-2">
                     <Shield className="text-primary-500" size={28} />
-                    <h2 className="text-2xl font-bold text-white">Admin Panel</h2>
+                    <h2 className="text-3xl font-bold text-white">Admin Panel</h2>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2">
@@ -61,7 +61,7 @@ const AdminLayout = () => {
 
             {/* Main Content */}
             <main className="flex-1">
-                <div className="p-8 max-w-7xl mx-auto">
+                <div className="p-4 md:p-8 max-w-7xl mx-auto">
                     <Outlet />
                 </div>
             </main>

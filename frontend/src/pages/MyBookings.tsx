@@ -4,7 +4,6 @@ import api from '../utils/api';
 import { Loader } from '../components/ui/Loader';
 import { Button } from '../components/ui/Button';
 import { BackButton } from '../components/common/BackButton';
-import { useLanguage } from '../context/LanguageContext';
 import { Calendar, Clock, MapPin, DollarSign, Search, Filter, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
 
 interface Booking {
@@ -21,7 +20,7 @@ interface Booking {
 }
 
 const MyBookings = () => {
-    const { t } = useLanguage();
+
     const navigate = useNavigate();
 
     // Data States
@@ -93,7 +92,7 @@ const MyBookings = () => {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h1 className="text-3xl font-bold">{t('myBookings')}</h1>
+                        <h1 className="text-3xl font-bold">My Bookings</h1>
                         <p className="text-gray-400 mt-1">Manage and track your service requests</p>
                     </div>
                     <Button onClick={() => navigate('/services')} className="bg-primary-600 hover:bg-primary-500 text-white shadow-lg shadow-primary-900/20">
@@ -109,8 +108,8 @@ const MyBookings = () => {
                                 key={status}
                                 onClick={() => setStatusFilter(status)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${statusFilter === status
-                                        ? 'bg-primary-600 text-white shadow-md'
-                                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                                    ? 'bg-primary-600 text-white shadow-md'
+                                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                                     }`}
                             >
                                 {status}
@@ -137,7 +136,7 @@ const MyBookings = () => {
                             <Filter size={32} />
                         </div>
                         <h3 className="text-xl font-medium text-white mb-2">
-                            {bookings.length === 0 ? t('noBookings') : 'No bookings found'}
+                            {bookings.length === 0 ? 'No bookings found' : 'No bookings found'}
                         </h3>
                         <p className="text-gray-400 mb-6 max-w-md mx-auto">
                             {bookings.length === 0

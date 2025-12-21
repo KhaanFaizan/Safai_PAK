@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
-import { LanguageProvider, useLanguage } from './context/LanguageContext';
+
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
@@ -13,7 +13,7 @@ import ServiceListing from './pages/ServiceListing';
 import ServiceDetails from './pages/ServiceDetails';
 import BookingPage from './pages/BookingPage';
 import MyBookings from './pages/MyBookings';
-import { Button } from './components/ui/Button';
+
 
 // Provider Pages
 import ProviderLayout from './components/layouts/ProviderLayout';
@@ -97,11 +97,9 @@ function App() {
   return (
     // Main App Provider Wrapper
     <AuthProvider>
-      <LanguageProvider>
-        <Router>
-          <AppContent />
-        </Router>
-      </LanguageProvider>
+      <Router>
+        <AppContent />
+      </Router>
     </AuthProvider>
   );
 }

@@ -1,13 +1,12 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import { useLanguage } from '../../context/LanguageContext';
 import { Button } from '../ui/Button';
-import { Menu, X, User, Globe, LogOut } from 'lucide-react';
+import { Menu, X, User, LogOut } from 'lucide-react';
+
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext)!;
-    const { t, language, toggleLanguage } = useLanguage();
     const navigate = useNavigate();
     const location = useLocation();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -26,7 +25,7 @@ const Navbar = () => {
         <Link
             to={to}
             onClick={closeMenu}
-            className={`px-3 py-2 rounded-md font-medium text-sm transition-colors ${isActive(to)
+            className={`px-3 py-2 rounded-md font-medium text-base transition-colors ${isActive(to)
                 ? 'text-primary-400 bg-gray-800'
                 : 'text-gray-300 hover:text-primary-400 hover:bg-gray-800'
                 }`}
@@ -38,10 +37,10 @@ const Navbar = () => {
     return (
         <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
             <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-16">
+                <div className="flex justify-between items-center h-20">
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center">
-                        <Link to="/" className="text-2xl font-bold text-primary-500 tracking-tight" onClick={closeMenu}>
+                        <Link to="/" className="text-3xl font-bold text-primary-500 tracking-tight" onClick={closeMenu}>
                             Safai<span className="text-white">Pak</span>
                         </Link>
                     </div>
@@ -50,19 +49,19 @@ const Navbar = () => {
                     <nav className="hidden md:flex flex-1 justify-center items-center space-x-8">
                         {user?.role !== 'provider' && (
                             <>
-                                <NavLink to="/services">{t('services')}</NavLink>
+                                <NavLink to="/services">Services</NavLink>
                                 <NavLink to="/how-it-works">How it Works</NavLink>
                             </>
                         )}
 
                         {/* Conditional Links based on Role */}
                         {user?.role === 'customer' && (
-                            <NavLink to="/bookings">{t('myBookings')}</NavLink>
+                            <NavLink to="/bookings">My Bookings</NavLink>
                         )}
 
                         {user?.role === 'provider' && (
                             <>
-                                <NavLink to="/provider/dashboard">{t('dashboard')}</NavLink>
+                                <NavLink to="/provider/dashboard">Dashboard</NavLink>
                                 <NavLink to="/provider/services">My Services</NavLink>
                             </>
                         )}
@@ -81,40 +80,31 @@ const Navbar = () => {
                         )}
                     </nav>
 
-                    {/* Right Actions (Desktop) */}
                     <div className="hidden md:flex items-center space-x-4">
-                        <button
-                            onClick={toggleLanguage}
-                            className="flex items-center gap-1.5 text-gray-400 hover:text-primary-400 text-sm font-medium transition-colors px-2 py-1 rounded-md"
-                        >
-                            <Globe size={18} />
-                            <span>{language === 'en' ? 'EN' : 'UR'}</span>
-                        </button>
 
-                        <div className="h-6 w-px bg-gray-700" />
 
                         {user ? (
                             <div className="flex items-center gap-3">
-                                <div className="flex items-center gap-2 text-sm font-medium text-gray-200">
-                                    <div className="h-8 w-8 rounded-full bg-gray-800 flex items-center justify-center text-primary-400 border border-gray-700">
-                                        <User size={16} />
+                                <div className="flex items-center gap-2 text-base font-medium text-gray-200">
+                                    <div className="h-9 w-9 rounded-full bg-gray-800 flex items-center justify-center text-primary-400 border border-gray-700">
+                                        <User size={18} />
                                     </div>
                                     <span className="hidden lg:inline">{user.name.split(' ')[0]}</span>
                                 </div>
-                                <Button onClick={handleLogout} variant="secondary" className="px-3 py-1.5 h-auto text-sm bg-gray-800 text-white hover:bg-gray-700 border-gray-700 hover:border-gray-600">
-                                    {t('logout')}
+                                <Button onClick={handleLogout} variant="secondary" className="px-4 py-2 h-auto text-sm font-medium bg-gray-800 text-white hover:bg-gray-700 border-gray-700 hover:border-gray-600">
+                                    Logout
                                 </Button>
                             </div>
                         ) : (
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-3">
                                 <Link to="/login">
-                                    <Button variant="secondary" className="px-4 py-2 h-auto text-sm border-gray-700 bg-gray-800 hover:bg-gray-700 text-white hover:border-gray-600">
-                                        {t('login')}
+                                    <Button variant="secondary" className="px-5 py-2.5 h-auto text-base font-medium border-gray-700 bg-gray-800 hover:bg-gray-700 text-white hover:border-gray-600">
+                                        Login
                                     </Button>
                                 </Link>
                                 <Link to="/register">
-                                    <Button className="px-4 py-2 h-auto text-sm shadow-md shadow-primary-900/20 bg-primary-600 hover:bg-primary-500 text-white border-transparent">
-                                        {t('register')}
+                                    <Button className="px-5 py-2.5 h-auto text-base font-medium shadow-lg shadow-primary-900/20 bg-primary-600 hover:bg-primary-500 text-white border-transparent">
+                                        Register
                                     </Button>
                                 </Link>
                             </div>
@@ -123,12 +113,6 @@ const Navbar = () => {
 
                     {/* Mobile Menu Button */}
                     <div className="flex items-center md:hidden gap-4">
-                        <button
-                            onClick={toggleLanguage}
-                            className="text-gray-400 hover:text-primary-400"
-                        >
-                            <span className="font-bold text-xs">{language === 'en' ? 'UR' : 'EN'}</span>
-                        </button>
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             className="text-gray-400 hover:text-white focus:outline-none"
@@ -158,18 +142,18 @@ const Navbar = () => {
                         <div className="space-y-1">
                             {user?.role !== 'provider' && (
                                 <>
-                                    <Link to="/services" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">{t('services')}</Link>
+                                    <Link to="/services" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">Services</Link>
                                     <Link to="/how-it-works" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">How it Works</Link>
                                 </>
                             )}
 
                             {user?.role === 'customer' && (
-                                <Link to="/bookings" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">{t('myBookings')}</Link>
+                                <Link to="/bookings" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">My Bookings</Link>
                             )}
 
                             {user?.role === 'provider' && (
                                 <>
-                                    <Link to="/provider/dashboard" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">{t('dashboard')}</Link>
+                                    <Link to="/provider/dashboard" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">Dashboard</Link>
                                     <Link to="/provider/services" onClick={closeMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-primary-400">My Services</Link>
                                 </>
                             )}
@@ -195,18 +179,18 @@ const Navbar = () => {
                                     className="w-full flex items-center justify-center gap-2 px-4 py-2 text-base font-medium text-red-400 bg-red-900/20 hover:bg-red-900/30 rounded-md transition-colors"
                                 >
                                     <LogOut size={18} />
-                                    {t('logout')}
+                                    Logout
                                 </button>
                             ) : (
                                 <div className="grid grid-cols-2 gap-3">
                                     <Link to="/login" onClick={closeMenu}>
                                         <Button variant="secondary" className="w-full justify-center bg-gray-800 text-white border-gray-700 hover:bg-gray-700 hover:border-gray-600">
-                                            {t('login')}
+                                            Login
                                         </Button>
                                     </Link>
                                     <Link to="/register" onClick={closeMenu}>
                                         <Button className="w-full justify-center bg-primary-600 border-transparent hover:bg-primary-500 text-white">
-                                            {t('register')}
+                                            Register
                                         </Button>
                                     </Link>
                                 </div>
