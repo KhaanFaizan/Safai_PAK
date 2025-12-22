@@ -23,7 +23,10 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all origins for now to debug deployment
+    credentials: true
+}));
 app.use(express.json());
 
 // Routes
