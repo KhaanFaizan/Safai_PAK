@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { BackButton } from '../components/common/BackButton';
-import { Input } from '../components/ui/Input';
+
 
 import { Loader } from '../components/ui/Loader';
 import { Calendar, Clock, MapPin, Phone, FileText, AlertCircle, Info } from 'lucide-react';

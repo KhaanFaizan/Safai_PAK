@@ -1,6 +1,6 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { Button } from '../ui/Button'; // Assuming Button is in ui/Button
+
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { cn } from '../ui/Button';
@@ -13,7 +13,6 @@ interface BackButtonProps {
 
 export const BackButton = ({ label = 'Back', customFallbackRoute, className }: BackButtonProps) => {
     const navigate = useNavigate();
-    const location = useLocation();
     const auth = useContext(AuthContext);
     const { user } = auth || {};
 

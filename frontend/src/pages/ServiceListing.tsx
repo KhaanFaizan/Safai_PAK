@@ -4,7 +4,7 @@ import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { Loader } from '../components/ui/Loader';
 import { BackButton } from '../components/common/BackButton';
-import { Search, DollarSign, Filter, SlidersHorizontal, Star } from 'lucide-react';
+import { Search, Filter, SlidersHorizontal, Star } from 'lucide-react';
 
 // Images
 import houseCleaning from '../assets/images/house-cleaning-service.jpeg';

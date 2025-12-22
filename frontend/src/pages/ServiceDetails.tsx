@@ -4,7 +4,7 @@ import api from '../utils/api';
 import { Button } from '../components/ui/Button';
 import { BackButton } from '../components/common/BackButton';
 import { Loader } from '../components/ui/Loader';
-import { CheckCircle, Clock, DollarSign, Star, Shield, ThumbsUp, Leaf } from 'lucide-react';
+import { CheckCircle, Clock, Star, Shield, ThumbsUp, Leaf } from 'lucide-react';
 
 // Images
 import houseCleaning from '../assets/images/house-cleaning-service.jpeg';
@@ -216,7 +216,7 @@ const ServiceDetails = () => {
                                     <div>
                                         <h3 className="font-bold text-lg text-white flex items-center gap-2">
                                             {service.user?.name || 'Provider'}
-                                            <CheckCircle size={14} className="text-blue-500" title="Verified" />
+                                            <CheckCircle size={14} className="text-blue-500" />
                                         </h3>
                                         <p className="text-sm text-gray-400">Verified Partner</p>
                                     </div>

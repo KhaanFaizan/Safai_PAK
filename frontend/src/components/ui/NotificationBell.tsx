@@ -1,5 +1,5 @@
 import { useContext, useState, useRef, useEffect } from 'react';
-import { Bell, Check, Info, Calendar, Shield, CreditCard } from 'lucide-react';
+import { Bell, Check, Info, Calendar, Shield } from 'lucide-react';
 import { NotificationContext } from '../../context/NotificationContext';
 import { Link } from 'react-router-dom';
 
