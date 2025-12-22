@@ -24,8 +24,14 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: '*', // Allow all origins for now to debug deployment
-    credentials: true
+    origin: [
+        "https://appealing-mindfulness-production.up.railway.app",
+        "http://localhost:5173",
+        "http://localhost:4173"
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 
