@@ -109,7 +109,7 @@ const ProviderServices = () => {
     return (
         <div className="space-y-8">
             <BackButton to="/provider/dashboard" className="text-gray-400 hover:text-white" />
-            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 opacity-0 animate-fade-in-up">
                 <div>
                     <h1 className="text-2xl font-bold text-white">My Services</h1>
                     <p className="text-gray-400">Manage the services you offer to customers.</p>
@@ -204,10 +204,11 @@ const ProviderServices = () => {
 
             {/* Services Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {services.map(service => (
+                {services.map((service, index) => (
                     <div
                         key={service._id}
-                        className="group bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden hover:border-gray-600 hover:shadow-lg transition-all duration-300 flex flex-col"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                        className="group bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden hover:border-gray-600 hover:shadow-lg transition-all duration-300 flex flex-col opacity-0 animate-fade-in-up"
                     >
                         <div className="p-6 flex-1">
                             <div className="flex justify-between items-start mb-4">

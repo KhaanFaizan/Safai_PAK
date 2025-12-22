@@ -69,7 +69,7 @@ const AdminProviders = () => {
     return (
         <div className="space-y-6">
             <BackButton to="/admin/dashboard" className="text-gray-400 hover:text-white" />
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 opacity-0 animate-fade-in-up">
                 <div>
                     <h1 className="text-2xl font-bold text-white flex items-center gap-2">
                         <Shield className="text-primary-500" size={28} />
@@ -92,7 +92,7 @@ const AdminProviders = () => {
             </div>
 
             {/* Filters */}
-            <div className="flex items-center gap-2 border-b border-gray-700 pb-1">
+            <div className="flex items-center gap-2 border-b border-gray-700 pb-1 opacity-0 animate-fade-in-up delay-100">
                 {['all', 'pending', 'verified'].map(f => (
                     <button
                         key={f}
@@ -110,10 +110,11 @@ const AdminProviders = () => {
             {/* Providers List */}
             <div className="grid gap-4">
                 {filteredUsers.length > 0 ? (
-                    filteredUsers.map(user => (
+                    filteredUsers.map((user, index) => (
                         <div
                             key={user._id}
-                            className={`p-5 rounded-xl border transition-all ${user.isVerified
+                            style={{ animationDelay: `${index * 100}ms` }}
+                            className={`p-5 rounded-xl border transition-all opacity-0 animate-fade-in-up ${user.isVerified
                                 ? 'bg-gray-800 border-gray-700 hover:border-gray-600'
                                 : 'bg-gray-800/80 border-primary-900/50 hover:border-primary-500/30'
                                 }`}

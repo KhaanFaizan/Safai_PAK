@@ -106,7 +106,7 @@ const MyBookings = () => {
                 <BackButton className="mb-6 text-gray-400 hover:text-white" />
 
                 {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 opacity-0 animate-fade-in-up">
                     <div>
                         <h1 className="text-3xl font-bold">My Bookings</h1>
                         <p className="text-gray-400 mt-1">Manage and track your service requests</p>
@@ -117,7 +117,7 @@ const MyBookings = () => {
                 </div>
 
                 {/* Filters & Search */}
-                <div className="bg-gray-800 rounded-xl p-4 border border-gray-700 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div className="bg-gray-800 rounded-xl p-4 border border-gray-700 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between opacity-0 animate-fade-in-up delay-100">
                     <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
                         {['All', 'Pending', 'Accepted', 'Completed', 'Cancelled'].map((status) => (
                             <button
@@ -172,14 +172,15 @@ const MyBookings = () => {
                     </div>
                 ) : (
                     <div className="grid gap-6">
-                        {filteredBookings.map((booking) => {
+                        {filteredBookings.map((booking, index) => {
                             const styles = getStatusStyles(booking.status);
                             const StatusIcon = styles.icon;
 
                             return (
                                 <div
                                     key={booking._id}
-                                    className="bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-700 hover:border-primary-500/50 transition-all group"
+                                    style={{ animationDelay: `${index * 100}ms` }}
+                                    className="bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-700 hover:border-primary-500/50 transition-all group opacity-0 animate-fade-in-up"
                                 >
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
 

@@ -78,7 +78,7 @@ const AdminAllUsers = () => {
     return (
         <div className="space-y-6">
             <BackButton to="/admin/dashboard" className="text-gray-400 hover:text-white" />
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 opacity-0 animate-fade-in-up">
                 <div>
                     <h1 className="text-2xl font-bold text-white flex items-center gap-2">
                         <User className="text-primary-500" size={28} />
@@ -101,7 +101,7 @@ const AdminAllUsers = () => {
             </div>
 
             {/* Filters */}
-            <div className="flex items-center gap-2 border-b border-gray-700 pb-1 overflow-x-auto">
+            <div className="flex items-center gap-2 border-b border-gray-700 pb-1 overflow-x-auto opacity-0 animate-fade-in-up delay-100">
                 {['all', 'customer', 'provider', 'admin'].map(role => (
                     <button
                         key={role}
@@ -119,10 +119,11 @@ const AdminAllUsers = () => {
             {/* Users List */}
             <div className="grid gap-4">
                 {filteredUsers.length > 0 ? (
-                    filteredUsers.map(user => (
+                    filteredUsers.map((user, index) => (
                         <div
                             key={user._id}
-                            className={`p-5 rounded-xl border transition-all ${user.isSuspended
+                            style={{ animationDelay: `${index * 100}ms` }}
+                            className={`p-5 rounded-xl border transition-all opacity-0 animate-fade-in-up ${user.isSuspended
                                 ? 'bg-gray-800/50 border-gray-700 opacity-75 grayscale-[0.5]'
                                 : 'bg-gray-800 border-gray-700 hover:border-gray-600'
                                 }`}

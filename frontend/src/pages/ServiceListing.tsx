@@ -102,7 +102,7 @@ const ServiceListing = () => {
 
                 {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4 border-b border-gray-800 pb-8">
-                    <div>
+                    <div className="opacity-0 animate-fade-in-up">
                         <h1 className="text-3xl md:text-4xl font-bold mb-2">
                             Explore <span className="text-primary-500">Services</span>
                         </h1>
@@ -111,7 +111,7 @@ const ServiceListing = () => {
                 </div>
 
                 {/* Filters & Search Bar */}
-                <div className="flex flex-col lg:flex-row gap-6 mb-10">
+                <div className="flex flex-col lg:flex-row gap-6 mb-10 opacity-0 animate-fade-in-up delay-100">
                     {/* Search */}
                     <div className="relative flex-grow">
                         <Search className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
@@ -149,7 +149,7 @@ const ServiceListing = () => {
                 </div>
 
                 {/* Category Pills */}
-                <div className="flex flex-wrap gap-2 mb-8">
+                <div className="flex flex-wrap gap-2 mb-8 opacity-0 animate-fade-in-up delay-200">
                     {categories.map(cat => (
                         <button
                             key={cat}
@@ -169,10 +169,11 @@ const ServiceListing = () => {
                 {/* Service Grid */}
                 {displayedServices.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {displayedServices.map((service) => (
+                        {displayedServices.map((service, index) => (
                             <div
                                 key={service._id}
-                                className="group bg-gray-800 rounded-2xl overflow-hidden border border-gray-700 hover:border-primary-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary-900/10 hover:-translate-y-1 flex flex-col"
+                                style={{ animationDelay: `${index * 100}ms` }}
+                                className="group bg-gray-800 rounded-2xl overflow-hidden border border-gray-700 hover:border-primary-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary-900/10 hover:-translate-y-1 flex flex-col opacity-0 animate-fade-in-up"
                             >
                                 {/* Image Container */}
                                 <div className="relative h-48 overflow-hidden">

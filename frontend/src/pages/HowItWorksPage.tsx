@@ -13,7 +13,7 @@ const HowItWorksPage = () => {
                 <BackButton className="mb-6 text-gray-400 hover:text-white" />
 
                 {/* Hero Section */}
-                <div className="text-center max-w-3xl mx-auto py-12">
+                <div className="text-center max-w-3xl mx-auto py-12 opacity-0 animate-fade-in-up">
                     <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-tight">
                         How <span className="text-primary-500">SafaiPak</span> Works
                     </h1>
@@ -32,7 +32,7 @@ const HowItWorksPage = () => {
                             { icon: Calendar, title: "3. Book Instantly", desc: "Select a time that works for you." },
                             { icon: Star, title: "4. Rate & Review", desc: "Share your experience with the community." }
                         ].map((step, idx) => (
-                            <div key={idx} className="bg-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-primary-500/50 transition duration-300 text-center group">
+                            <div key={idx} style={{ animationDelay: `${(idx + 1) * 100}ms` }} className="bg-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-primary-500/50 transition duration-300 text-center group opacity-0 animate-fade-in-up">
                                 <div className="h-16 w-16 bg-gray-900 rounded-full mx-auto mb-6 flex items-center justify-center text-primary-500 group-hover:scale-110 transition-transform border border-gray-700">
                                     <step.icon size={32} />
                                 </div>
@@ -49,7 +49,7 @@ const HowItWorksPage = () => {
                 </div>
 
                 {/* Provider Flow */}
-                <div className="mb-24 bg-gray-800/50 rounded-3xl p-8 md:p-16 border border-gray-800">
+                <div className="mb-24 bg-gray-800/50 rounded-3xl p-8 md:p-16 border border-gray-800 opacity-0 animate-fade-in-up delay-300">
                     <h2 className="text-3xl font-bold text-center mb-12">For Service Providers</h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {[
@@ -77,7 +77,7 @@ const HowItWorksPage = () => {
                 </div>
 
                 {/* Trust & Benefits */}
-                <div className="grid md:grid-cols-2 gap-16 mb-24">
+                <div className="grid md:grid-cols-2 gap-16 mb-24 opacity-0 animate-fade-in-up delay-400">
                     <div>
                         <h2 className="text-3xl font-bold mb-8">Why Choose SafaiPak?</h2>
                         <ul className="space-y-6">

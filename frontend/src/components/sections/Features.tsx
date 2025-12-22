@@ -6,7 +6,7 @@ const Features = () => {
             <div className="max-w-[1440px] mx-auto">
                 <div className="grid md:grid-cols-3 gap-8">
                     {/* Feature 1 */}
-                    <div className="bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700 hover:border-primary-500/50 hover:bg-gray-800/80 transition duration-300 group">
+                    <div className="bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700 hover:border-primary-500/50 hover:bg-gray-800/80 transition duration-300 group opacity-0 animate-fade-in-up delay-200">
                         <div className="h-14 w-14 bg-gray-900 rounded-xl mb-6 flex items-center justify-center text-primary-500 group-hover:scale-110 transition-transform duration-300 border border-gray-700 group-hover:border-primary-500/30">
                             <ShieldCheck size={28} />
                         </div>
@@ -17,7 +17,7 @@ const Features = () => {
                     </div>
 
                     {/* Feature 2 */}
-                    <div className="bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700 hover:border-primary-500/50 hover:bg-gray-800/80 transition duration-300 group">
+                    <div className="bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700 hover:border-primary-500/50 hover:bg-gray-800/80 transition duration-300 group opacity-0 animate-fade-in-up delay-300">
                         <div className="h-14 w-14 bg-gray-900 rounded-xl mb-6 flex items-center justify-center text-primary-500 group-hover:scale-110 transition-transform duration-300 border border-gray-700 group-hover:border-primary-500/30">
                             <Zap size={28} />
                         </div>
@@ -28,7 +28,7 @@ const Features = () => {
                     </div>
 
                     {/* Feature 3 */}
-                    <div className="bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700 hover:border-primary-500/50 hover:bg-gray-800/80 transition duration-300 group">
+                    <div className="bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700 hover:border-primary-500/50 hover:bg-gray-800/80 transition duration-300 group opacity-0 animate-fade-in-up delay-400">
                         <div className="h-14 w-14 bg-gray-900 rounded-xl mb-6 flex items-center justify-center text-primary-500 group-hover:scale-110 transition-transform duration-300 border border-gray-700 group-hover:border-primary-500/30">
                             <ThumbsUp size={28} />
                         </div>

@@ -74,7 +74,7 @@ const ProviderEarnings = () => {
     return (
         <div className="space-y-8">
             <BackButton to="/provider/dashboard" className="text-gray-400 hover:text-white" />
-            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 opacity-0 animate-fade-in-up">
                 <div>
                     <h1 className="text-2xl font-bold text-white">Earnings & Payouts</h1>
                     <p className="text-gray-400 text-sm">Overview of your financial performance.</p>
@@ -87,7 +87,7 @@ const ProviderEarnings = () => {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 p-6 rounded-2xl relative overflow-hidden group">
+                <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 p-6 rounded-2xl relative overflow-hidden group opacity-0 animate-fade-in-up delay-100">
                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                         <DollarSign size={100} className="text-primary-500" />
                     </div>
@@ -100,7 +100,7 @@ const ProviderEarnings = () => {
                     </div>
                 </div>
 
-                <div className="bg-gray-800 border border-gray-700 p-6 rounded-2xl">
+                <div className="bg-gray-800 border border-gray-700 p-6 rounded-2xl opacity-0 animate-fade-in-up delay-200">
                     <div className="flex items-center gap-4 mb-4">
                         <div className="w-10 h-10 rounded-full bg-blue-900/30 flex items-center justify-center text-blue-400">
                             <TrendingUp size={20} />
@@ -116,7 +116,7 @@ const ProviderEarnings = () => {
                     <p className="text-xs text-gray-500 mt-2">60% of monthly goal</p>
                 </div>
 
-                <div className="bg-gray-800 border border-gray-700 p-6 rounded-2xl">
+                <div className="bg-gray-800 border border-gray-700 p-6 rounded-2xl opacity-0 animate-fade-in-up delay-300">
                     <div className="flex items-center gap-4 mb-4">
                         <div className="w-10 h-10 rounded-full bg-purple-900/30 flex items-center justify-center text-purple-400">
                             <CheckCircle size={20} />
@@ -134,7 +134,7 @@ const ProviderEarnings = () => {
             </div>
 
             {/* Transaction History */}
-            <div className="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden">
+            <div className="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden opacity-0 animate-fade-in-up delay-400">
                 <div className="p-6 border-b border-gray-700 flex justify-between items-center">
                     <h3 className="font-bold text-white text-lg">Payment History</h3>
                     <button className="text-sm text-primary-400 hover:text-primary-300 transition-colors">Download Statement</button>

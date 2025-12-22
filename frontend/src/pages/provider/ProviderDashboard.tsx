@@ -3,7 +3,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { Loader } from '../../components/ui/Loader';
 import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
-import { DollarSign, Calendar, Star, TrendingUp, AlertTriangle, Clock, ChevronRight, Briefcase, CheckCircle } from 'lucide-react';
+import { DollarSign, Calendar, Star, TrendingUp, AlertTriangle, Clock, Briefcase, CheckCircle } from 'lucide-react';
 
 interface Booking {
     _id: string;
@@ -96,7 +96,7 @@ const ProviderDashboard = () => {
     return (
         <div className="space-y-10">
             {/* Header */}
-            <header className="text-center md:text-left">
+            <header className="text-center md:text-left opacity-0 animate-fade-in-up">
                 <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-2">
                     Welcome, <span className="text-primary-400">{user?.name}</span>
                 </h1>
@@ -132,13 +132,14 @@ const ProviderDashboard = () => {
                     return (
                         <div
                             key={index}
+                            style={{ animationDelay: `${index * 100}ms` }}
                             onClick={() => navigate(card.path)}
                             className="
                                 group cursor-pointer
                                 bg-gray-800 border border-gray-700 rounded-2xl p-8
                                 flex flex-col items-center text-center
                                 hover:border-primary-500/50 hover:shadow-2xl hover:shadow-primary-900/10 hover:-translate-y-1
-                                transition-all duration-300
+                                transition-all duration-300 opacity-0 animate-fade-in-up
                             "
                         >
                             <div className="
@@ -168,7 +169,7 @@ const ProviderDashboard = () => {
             </div>
 
             {/* Quick Stats Row (Optional, kept minimal) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 opacity-0 animate-fade-in-up delay-300">
                 <div onClick={() => navigate('/provider/bookings')} className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 flex items-center justify-between cursor-pointer hover:bg-gray-800 transition-colors group">
                     <div>
                         <h4 className="text-gray-400 font-medium mb-1">Response Rate</h4>

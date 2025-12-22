@@ -47,7 +47,7 @@ const ContactPage = () => {
             <div className="max-w-[1440px] mx-auto px-4 py-8">
                 <BackButton className="mb-6 text-gray-400 hover:text-white" />
 
-                <div className="text-center max-w-3xl mx-auto py-12">
+                <div className="text-center max-w-3xl mx-auto py-12 opacity-0 animate-fade-in-up">
                     <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
                         Contact <span className="text-primary-500">Us</span>
                     </h1>
@@ -58,7 +58,7 @@ const ContactPage = () => {
 
                 <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto mb-20">
                     {/* Contact Info */}
-                    <div className="space-y-8">
+                    <div className="space-y-8 opacity-0 animate-fade-in-up delay-100">
                         <div className="bg-gray-800 p-8 rounded-2xl border border-gray-700">
                             <h2 className="text-2xl font-bold mb-6">Get in Touch</h2>
                             <div className="space-y-6">
@@ -105,7 +105,7 @@ const ContactPage = () => {
                     </div>
 
                     {/* Contact Form */}
-                    <div className="bg-gray-800 p-8 rounded-2xl border border-gray-700 shadow-xl">
+                    <div className="bg-gray-800 p-8 rounded-2xl border border-gray-700 shadow-xl opacity-0 animate-fade-in-up delay-200">
                         <h2 className="text-2xl font-bold mb-6">Send us a Message</h2>
 
                         {success && (

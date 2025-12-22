@@ -71,7 +71,7 @@ const ProviderBookings = () => {
     return (
         <div className="space-y-8">
             <BackButton to="/provider/dashboard" className="text-gray-400 hover:text-white" />
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 opacity-0 animate-fade-in-up">
                 <div>
                     <h1 className="text-2xl font-bold text-white">Manage Bookings</h1>
                     <p className="text-gray-400 text-sm">Track and manage your service appointments.</p>
@@ -94,8 +94,8 @@ const ProviderBookings = () => {
             </div>
 
             <div className="space-y-4">
-                {filteredBookings.map(booking => (
-                    <div key={booking._id} className="bg-gray-800 border border-gray-700 rounded-2xl p-6 hover:border-gray-600 transition-all shadow-sm">
+                {filteredBookings.map((booking, index) => (
+                    <div key={booking._id} style={{ animationDelay: `${index * 100}ms` }} className="bg-gray-800 border border-gray-700 rounded-2xl p-6 hover:border-gray-600 transition-all shadow-sm opacity-0 animate-fade-in-up">
                         <div className="flex flex-col lg:flex-row gap-6">
                             {/* Service & Customer Info */}
                             <div className="flex-1 space-y-4">

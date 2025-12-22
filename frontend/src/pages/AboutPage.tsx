@@ -12,7 +12,7 @@ const AboutPage = () => {
                 <BackButton className="mb-6 text-gray-400 hover:text-white" />
 
                 {/* Header */}
-                <div className="text-center max-w-3xl mx-auto py-12">
+                <div className="text-center max-w-3xl mx-auto py-12 opacity-0 animate-fade-in-up">
                     <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
                         About <span className="text-primary-500">SafaiPak</span>
                     </h1>
@@ -23,7 +23,7 @@ const AboutPage = () => {
 
                 {/* Mission & Vision */}
                 <div className="grid md:grid-cols-2 gap-8 mb-24">
-                    <div className="bg-gray-800 p-10 rounded-3xl border border-gray-700 hover:border-primary-500/30 transition-colors">
+                    <div className="bg-gray-800 p-10 rounded-3xl border border-gray-700 hover:border-primary-500/30 transition-colors opacity-0 animate-fade-in-up delay-100">
                         <div className="h-14 w-14 bg-primary-900/30 rounded-xl mb-6 flex items-center justify-center text-primary-500">
                             <TrendingUp size={32} />
                         </div>
@@ -33,7 +33,7 @@ const AboutPage = () => {
                         </p>
                     </div>
 
-                    <div className="bg-gray-800 p-10 rounded-3xl border border-gray-700 hover:border-primary-500/30 transition-colors">
+                    <div className="bg-gray-800 p-10 rounded-3xl border border-gray-700 hover:border-primary-500/30 transition-colors opacity-0 animate-fade-in-up delay-200">
                         <div className="h-14 w-14 bg-primary-900/30 rounded-xl mb-6 flex items-center justify-center text-primary-500">
                             <Award size={32} />
                         </div>
@@ -54,7 +54,7 @@ const AboutPage = () => {
                             { icon: CheckCircle, title: "Transparency", desc: "Honest pricing and clear communication at every step of the process." },
                             { icon: Users, title: "Community Support", desc: "Empowering local professionals to grow their businesses with dignity." }
                         ].map((value, idx) => (
-                            <div key={idx} className="bg-gray-800 p-8 rounded-2xl border border-gray-700 text-center hover:-translate-y-1 transition-transform duration-300">
+                            <div key={idx} style={{ animationDelay: `${(idx + 3) * 100}ms` }} className="bg-gray-800 p-8 rounded-2xl border border-gray-700 text-center hover:-translate-y-1 transition-transform duration-300 opacity-0 animate-fade-in-up">
                                 <div className="h-12 w-12 bg-gray-900 rounded-full mx-auto mb-6 flex items-center justify-center text-primary-500 border border-gray-700">
                                     <value.icon size={24} />
                                 </div>
@@ -66,8 +66,8 @@ const AboutPage = () => {
                 </div>
 
                 {/* Trust Section */}
-                <div className="mb-24 bg-gradient-to-br from-gray-800 to-gray-900 p-12 rounded-3xl border border-gray-700 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-primary-900/20 blur-3xl pointer-events-none"></div>
+                <div className="mb-24 bg-gradient-to-br from-gray-800 to-gray-900 p-12 rounded-3xl border border-gray-700 relative overflow-hidden opacity-0 animate-fade-in-up delay-500">
+                    <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-primary-900/20 blur-3xl pointer-events-none animate-float"></div>
 
                     <div className="relative z-10 max-w-4xl mx-auto text-center">
                         <h2 className="text-3xl font-bold mb-8">Why Pakistan Trusts Us</h2>
