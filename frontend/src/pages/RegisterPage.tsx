@@ -63,7 +63,7 @@ const RegisterPage = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4 py-12">
-            <div className="w-full max-w-2xl bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-xl">
+            <div className="w-full max-w-2xl bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-xl opacity-0 animate-fade-in-up">
                 <div className="text-center mb-8">
                     <h2 className="text-3xl font-bold text-white mb-2">Register</h2>
                     <p className="text-gray-400">Join us today! Create your account.</p>

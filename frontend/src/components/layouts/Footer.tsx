@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { Facebook, Twitter, Instagram, Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
+import { Facebook, Github, Instagram, Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
 
 const Footer = () => {
 
@@ -21,9 +21,9 @@ const Footer = () => {
                             Connecting verified sanitation experts with communities across Pakistan. Professional, reliable, and just a click away.
                         </p>
                         <div className="flex items-center gap-4 text-gray-500">
-                            <a href="#" className="hover:text-primary-400 transition-colors"><Facebook size={20} /></a>
-                            <a href="#" className="hover:text-primary-400 transition-colors"><Twitter size={20} /></a>
-                            <a href="#" className="hover:text-primary-400 transition-colors"><Instagram size={20} /></a>
+                            <a href="https://github.com/KhaanFaizan" target="_blank" rel="noopener noreferrer" className="hover:text-primary-400 transition-colors"><Facebook size={20} /></a>
+                            <a href="https://github.com/KhaanFaizan" target="_blank" rel="noopener noreferrer" className="hover:text-primary-400 transition-colors"><Github size={20} /></a>
+                            <a href="https://github.com/KhaanFaizan" target="_blank" rel="noopener noreferrer" className="hover:text-primary-400 transition-colors"><Instagram size={20} /></a>
                         </div>
                     </div>
 
@@ -73,7 +73,7 @@ const Footer = () => {
                             </li>
                             <li className="flex items-center gap-3 text-gray-400 text-sm">
                                 <MapPin size={18} className="text-primary-500" />
-                                <span>Lahore, Pakistan</span>
+                                <span>Islamabad, Pakistan</span>
                             </li>
                         </ul>
                         <div className="bg-gray-800 border border-gray-700 p-4 rounded-lg flex items-center gap-3">
