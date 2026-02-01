@@ -40,9 +40,12 @@ const Navbar = () => {
             <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
                     {/* Logo */}
-                    <div className="flex-shrink-0 flex items-center">
-                        <Link to="/" className="text-3xl font-bold text-primary-500 tracking-tight" onClick={closeMenu}>
-                            Safai<span className="text-white">Pak</span>
+                    <div className="flex-shrink-0 flex items-center gap-3">
+                        <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
+                            <img src="/logo.png" alt="Safai Pak Logo" className="h-10 w-10 object-contain" />
+                            <span className="text-3xl font-bold text-primary-500 tracking-tight">
+                                Safai<span className="text-white">Pak</span>
+                            </span>
                         </Link>
                     </div>
 
