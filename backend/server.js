@@ -37,6 +37,9 @@ app.use(cors({
 app.use(express.json());
 
 app.get('/', (req, res) => {
+    if (process.env.FRONTEND_URL) {
+        return res.redirect(process.env.FRONTEND_URL);
+    }
     res.send('API is running...');
 });
 
